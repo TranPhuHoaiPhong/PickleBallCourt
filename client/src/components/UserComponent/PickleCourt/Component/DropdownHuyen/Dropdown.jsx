@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import { Dropdown, Space } from 'antd';
 import { CiLocationOn } from "react-icons/ci";
+import './style.css';
 
 function DropdownH() {
   const [selectedHuyen, setSelectedHuyen] = useState("Chọn Quận/Huyện");
@@ -8,48 +9,30 @@ function DropdownH() {
   const onClick = ({ key }) => {
     const selecteditem = items.find(item => item.key === key)
     if (selecteditem) {
-      const labeltext = selecteditem.label.props.children;
+      const labeltext = selecteditem.label;
       setSelectedHuyen(labeltext); 
     }
-    console.log(`Click on item ${selecteditem.label.props.children}`);
+    console.log(`Click on item ${selecteditem.label}`);
   };
 
   const items = [
     {
       key: '1',
-      label: (
-        <div style={{
-          textAlign: "center",
-        }}>
-          Huyện Ninh Kiều
-        </div>
-      ),
+      label: "Huyện Ninh Kiều"
     },
     {
       key: '2',
-      label: (
-        <div style={{
-          textAlign: "center",
-        }}>
-          Huyện Cái Răng
-        </div>
-      ),
-    },
+      label: "Huyện Cái Răng"
+    },        
     {
       key: '3',
-      label: (
-        <div style={{
-          textAlign: "center",
-        }}>
-          Phường Cái Khế
-        </div>
-      ),
-    }
+      label: "Phường Cái Khế", 
+    }     
   ];
   
   return (
     <Dropdown 
-      menu={{ items, onClick }} 
+      menu={{ items, onClick, className: "custom-dropdown-menu", }} 
       trigger={['click']}
     >
     <a style={{}} onClick={e => e.preventDefault()}>

@@ -10,17 +10,19 @@ import slide5 from '../../assets/images/slide5.webp'
 import slide6 from '../../assets/images/slide6.webp'
 import slide7 from '../../assets/images/slide7.webp'
 import Introduction from '../../components/UserComponent/PickleCourt/Introduction/Introduction'
+import FooterPickleCourt from '../../components/UserComponent/PickleCourt/FooterPickleCourt/FooterPickleCourt'
 
 function CourtPickle() {
   return (
     <>
     <HeaderComponent/>
-      <div style={{ marginTop: '80px'}}>
-        <CourtComponent arrImages={[slide1, slide2, slide3, slide4, slide5, slide6, slide7]}/>
-        <div style={{ width: "1200px", margin: "auto", padding: "20px 0" }}>
-          <Introduction/>
-        </div>
+    <div style={{ marginTop: '80px'}}>
+      <CourtComponent arrImages={[slide1, slide2, slide3, slide4, slide5, slide6, slide7]}/>
+      <div style={{ maxWidth: "1200px", margin: "auto", padding: "20px 10px" }}>
+        <Introduction/>
       </div>
+    </div>
+    <FooterPickleCourt/>
     </>
     
   )

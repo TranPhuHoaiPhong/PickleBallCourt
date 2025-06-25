@@ -1,0 +1,4 @@
+.custom-dropdown-menu {
+  min-width: 103% !important; /* 👈 điều chỉnh chiều rộng mong muốn */
+  text-align: center;
+}

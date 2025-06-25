@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaCity } from "react-icons/fa";
 import DropdownH from '../Component/DropdownHuyen/Dropdown';
 import SearchComponent from '../Component/SearchComponent/SearchComponent';
+import { useNavigate } from 'react-router-dom';
+
 
 function CourtComponent({arrImages}) {
     const settings = {
@@ -17,8 +19,10 @@ function CourtComponent({arrImages}) {
         pauseOnHover: false 
     };
 
+    const navigate = useNavigate(); 
     const HandleClickSearch = () => {
         console.log("Search button clicked");
+        navigate("/searchPage");
     }
 
   return (
@@ -62,9 +66,7 @@ function CourtComponent({arrImages}) {
                 <div style={{ width: "25%"}}><SearchComponent onClick={HandleClickSearch}/></div>
             </div>
         </div>
-    </>
-
-    
+    </> 
   )
 }
 
