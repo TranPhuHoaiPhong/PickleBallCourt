@@ -1,6 +1,7 @@
 import HomePgae from "../pages/HomePage/HomePgae"
 import CourtPickle from "../pages/CourtPickleball/CourtPickleball"
 import SearchPage from "../pages/SearchPage/SearchPage"
+import DetailCourt from "../pages/DatailCourt/DetailCourt"
 
 export const routes = [
     { 
@@ -18,5 +19,10 @@ export const routes = [
         page: SearchPage,
         isShowHeader: false
     },
+    {
+        path: '/detailCourt/:id', 
+        page: DetailCourt,
+        isShowHeader: false
+    }
 
 ]
