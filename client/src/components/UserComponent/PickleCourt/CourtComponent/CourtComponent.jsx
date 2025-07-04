@@ -24,6 +24,20 @@ function CourtComponent({arrImages}) {
         console.log("Search button clicked");
         navigate("/searchPage");
     }
+    const items = [
+        {
+        key: '1',
+        label: "Huyện Ninh Kiều"
+        },
+        {
+        key: '2',
+        label: "Huyện Cái Răng"
+        },        
+        {
+        key: '3',
+        label: "Phường Cái Khế", 
+        }     
+    ];
 
   return (
     <>
@@ -62,7 +76,7 @@ function CourtComponent({arrImages}) {
                     <FaCity style={{ marginRight: "10px"}}/>
                     <span>Thành Phố Cần Thơ </span>
                 </div>
-                <div style={{ width: "25%", cursor:"pointer"}}><DropdownH/></div>
+                <div style={{ width: "25%", cursor:"pointer"}}><DropdownH items={items}/></div> 
                 <div style={{ width: "25%"}}><SearchComponent onClick={HandleClickSearch}/></div>
             </div>
         </div>
