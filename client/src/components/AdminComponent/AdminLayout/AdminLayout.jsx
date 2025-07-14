@@ -14,7 +14,7 @@ const AdminLayout = ({ children }) => {
             toggleSidebar={() => setIsShowSidebar((prev) => !prev)}
           />
 
-          <main>{children}</main>
+          <main style={{ margin: "24px", fontSize: 14 }}>{children}</main>
         </div>
       </div>
     </>
