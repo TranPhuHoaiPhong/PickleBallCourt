@@ -1,27 +1,36 @@
-import React, { Fragment } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DefaultComponent from './components/UserComponent/DefaultComponent/DefaultComponent';
-const {routes} = require('./routes/index');
+import React, { Fragment } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DefaultComponent from "./components/UserComponent/DefaultComponent/DefaultComponent";
+import AdminLayout from "./components/AdminComponent/AdminLayout/AdminLayout";
+const { routes } = require("./routes/index");
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          {routes.map((route) => {
-            const Page = route.page
-            const Layout = route.isShowHeader ? DefaultComponent : Fragment
-            return (
-              <Route key={route.path} path={route.path} element={
+    <BrowserRouter>
+      <Routes>
+        {routes.map((route) => {
+          const Page = route.page;
+
+          const Layout = route.isShowHeader
+            ? DefaultComponent
+            : route.isShowAdminLayout
+            ? AdminLayout
+            : Fragment;
+
+          return (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
                 <Layout>
-              <Page/>
+                  <Page />
                 </Layout>
-            }/>
-            )
-          })}
-        </Routes>
-      </BrowserRouter>
-    </div>
+              }
+            />
+          );
+        })}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
