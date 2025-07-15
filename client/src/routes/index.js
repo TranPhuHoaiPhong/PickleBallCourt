@@ -3,6 +3,7 @@ import CourtPickle from "../pages/CourtPickleball/CourtPickleball"
 import SearchPage from "../pages/SearchPage/SearchPage"
 import DetailCourt from "../pages/DatailCourt/DetailCourt"
 import BookCourt from "../pages/BookCourt/BookCourtComponent"
+import Register from "../pages/Register/Register"
 
 export const routes = [
     { 
@@ -28,6 +29,11 @@ export const routes = [
     {
         path: '/bookCourt', 
         page: BookCourt,
+        isShowHeader: false
+    },
+    {
+        path: '/register', 
+        page: Register,
         isShowHeader: false
     }
 

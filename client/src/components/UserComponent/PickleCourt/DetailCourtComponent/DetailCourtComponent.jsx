@@ -5,7 +5,7 @@ import i2 from '../../../../assets/introduction/intro/product1.webp';
 import i3 from '../../../../assets/introduction/intro/product2.webp';
 import i4 from '../../../../assets/introduction/intro/product3.jpg';
 import { CiPhone } from "react-icons/ci";
-import { Button, Col, Row, DatePicker } from 'antd';
+import { Button, Col, Row, DatePicker, Modal } from 'antd';
 import { CiMail } from "react-icons/ci";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
@@ -40,6 +40,17 @@ function DetailCourtComponent() {
       key: String(index + 1), // key = 1, 2, 3,...
       label: String(hour)     // label = "9", "10",...
     }));
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+    const handleOk = () => {
+      setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
 
     
 
@@ -121,7 +132,8 @@ function DetailCourtComponent() {
               justifyContent: 'center', // căn giữa theo chiều ngang
               gap: '10px',
               marginTop: '20px', // tùy thêm cho đẹp
-              flexWrap: 'wrap' // nếu muốn responsive khi nhỏ lại
+              flexWrap: 'wrap',
+              marginBottom: '20px',
             }}
           >
             <DatePicker 
@@ -150,14 +162,293 @@ function DetailCourtComponent() {
             </Button>
           </div>
 
-          <div style={{ height: "33%"}}>
+          <div>
             <SrollComponent />
           </div>
 
+          <div style={{ display: 'flex', flexDirection: 'row', marginTop: '20px', gap: '10px', flexWrap: 'wrap'}}>
+            Chọn sân: 
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 1</span>
+                <span>18H</span>
+              </div>
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 2</span>
+                <span>19H</span>
+              </div>
+
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 1</span>
+                <span>18H</span>
+              </div>
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 2</span>
+                <span>19H</span>
+              </div>
+
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 1</span>
+                <span>18H</span>
+              </div>
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              backgroundColor: 'black',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '8px',
+              width: 'fit-content',
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span>Sân 2</span>
+                <span>19H</span>
+              </div>
+
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-1px',
+                  right: '3px',
+                  cursor: 'pointer',
+                  color: 'red',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => console.log('Đã bấm đóng')}
+              >
+                ×
+              </span>
+            </div>
+
+            
+
+          </div>
+
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: '20px'}}>
-             <Link to="/bookCourt" style={{ width: '100%', display: 'contents'}}>{/* ${item.id} */}
-              <Button style={{ width: "65%", padding: "25px"}} color="default" variant="solid"><FaRegCalendarAlt /> Đặt sân ngay</Button>
-            </Link>
+             {/* <Link to="/bookCourt" style={{ width: '100%', display: 'contents'}}>${item.id} */}
+              <Button onClick={showModal} style={{ width: "65%", padding: "25px"}} color="default" variant="solid"><FaRegCalendarAlt /> Đặt sân ngay</Button>
+            {/* </Link> */}
+            <Modal
+              title="THANH TOÁN"
+              closable={{ 'aria-label': 'Custom Close Button' }}
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              okText="Xác nhận"
+              cancelText="Hủy"
+            >
+              <div>
+                <Row>
+                  <Col
+                    span={10}
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                      height: '40px'            // Phải có chiều cao để align dọc có tác dụng
+                    }}
+                  >
+                    Tên sân
+                  </Col>
+
+                  <Col
+                    span={4}
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '40px'
+                    }}
+                  >
+                    Giờ
+                  </Col>
+
+                  <Col
+                    span={10}
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '40px'
+                    }}
+                  >
+                    Giá
+                  </Col>
+                </Row>
+
+              </div>
+              <div>
+                <Row>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}> Sân 1</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={4}>18H</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}>90.000</Col>
+                </Row>
+              </div>
+              <div>
+                <Row>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}> Sân 2</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={4}>19H</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}>90.000</Col>
+                </Row>
+              </div>
+              <div>
+                <Row>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}> Sân 3</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={4}>20H</Col>
+                  <Col style={{display: 'flex',
+                      justifyContent: 'center', // Căn giữa ngang
+                      alignItems: 'center',     // Căn giữa dọc
+                    }} span={10}>90.000</Col>
+                </Row>
+              </div>
+
+              <div style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '16px', marginTop: '20px', marginRight: '20px' }}>
+                Tổng giá: 270.000
+              </div>
+            </Modal>
           </div>
         </Col>
         <div style={{ width: '100%', marginTop: '20px'}}>

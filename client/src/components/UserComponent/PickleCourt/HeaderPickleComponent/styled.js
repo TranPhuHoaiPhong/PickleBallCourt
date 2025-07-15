@@ -6,7 +6,7 @@ export const WrapperHeader = styled(Row)`
     padding: 10px 120px;
     background-color: rgb(53, 58, 64);
     color: white;
-    align-items: center;  /* Sửa lỗi chính tả */
+    align-items: center; 
     flex-wrap: nowrap;
     height: 80px
 `;
