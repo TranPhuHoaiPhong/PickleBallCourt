@@ -1,0 +1,65 @@
+# Node modules
+node_modules/
+
+# Build
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env file (chứa thông tin bí mật)
+.env
+
+# Editor
+.vscode/
+.idea/
+
+# Cache
+.cache/
+.nyc_output/
+coverage/
+*.tgz
+
+# Bỏ qua ảnh & media
+*.gif
+*.jpg
+*.jpeg
+*.png
+*.svg
+*.webp
+*.mp4
+*.avi
+*.mov
+
+# MongoDB dump hoặc dữ liệu tạm
+dump/
+*.bson
+
+# # Ignore uploads nếu có
+# uploads/
+# public/uploads/
+# temp/
+
+# Optional: Ignore zip, rar, exe, iso
+*.zip
+*.rar
+*.7z
+*.exe
+*.iso
+
+# Ignore firebase (nếu c
