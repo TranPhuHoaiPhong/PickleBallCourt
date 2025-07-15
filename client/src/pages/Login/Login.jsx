@@ -59,15 +59,6 @@ const Login = () => {
             <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Đăng nhập</h1>
 
             <InputField
-              label="Họ và tên"
-              type="text"
-              value={fullName}
-              setValue={setFullName}
-              handleOnchange={(val) => setFullName(val)}
-            />
-            {errors.fullName && <div style={{ color: 'red', fontSize: '12px' }}>Họ và tên không được để trống</div>}
-
-            <InputField
               label="Gmail"
               type="text"
               value={email}
@@ -75,6 +66,8 @@ const Login = () => {
               handleOnchange={(val) => setEmail(val)}
             />
             {errors.email && <div style={{ color: 'red', fontSize: '12px' }}>Email không hợp lệ</div>}
+
+            
 
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', gap: '20px' }}>
               <div>

@@ -6,7 +6,7 @@ import BookCourt from "../pages/BookCourt/BookCourtComponent";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import CourtBookingManager from "../pages/Admin/CourtBookingManager/CourtBookingManager";
-
+import Login from "../pages/Login/Login";
 export const routes = [
   {
     path: "/",
@@ -47,5 +47,10 @@ export const routes = [
     path: "/admin/court",
     page: CourtBookingManager,
     isShowAdminLayout: true,
+  },
+  {
+    path: "/login",
+    page: Login,
+    isShowHeader: false,
   },
 ];

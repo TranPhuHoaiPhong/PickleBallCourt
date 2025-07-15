@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import HeaderComponent from '../../components/UserComponent/PickleCourt/HeaderPickleComponent/HeaderPickleComponent'
-import FooterPickleCourt from '../../components/UserComponent/PickleCourt/FooterPickleCourt/FooterPickleCourt'
 import InputField from "../../components/UserComponent/PickleCourt/Component/InputComponent/InputComponent"
 import { Button, Image } from 'antd'
 import captcha from '../../assets/captcha/07487.jpg'
@@ -13,10 +12,11 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [captchaValue, setCaptchaValue] = useState("");
+  const [password, setPassword] = useState("");
 
-     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [verifyCode, setVerifyCode] = useState("");
-    const [verifyError, setVerifyError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [verifyCode, setVerifyCode] = useState("");
+  const [verifyError, setVerifyError] = useState(false);
 
 
   const [errors, setErrors] = useState({
@@ -24,14 +24,16 @@ const Register = () => {
     email: false,
     phone: false,
     captcha: false,
+    password: false,
   });
 
   const handleSubmit = () => {
     const newErrors = {
       fullName: fullName.trim() === "",
+      password: password.trim() === "",
       email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
       phone: !/^\d{9,11}$/.test(phone),
-      captcha: captchaValue !== "07487", // hardcoded mã captcha
+      captcha: captchaValue !== "07487",
     };
 
     setErrors(newErrors);
@@ -75,6 +77,17 @@ const Register = () => {
               handleOnchange={(val) => setEmail(val)}
             />
             {errors.email && <div style={{ color: 'red', fontSize: '12px' }}>Email không hợp lệ</div>}
+
+            <InputField
+              label="Mật khẩu"
+              type="password"
+              isPassword={true}
+              value={password}
+              setValue={setPassword}
+              handleOnchange={(val) => setPassword(val)}
+            />
+            {errors.password && <div style={{ color: 'red', fontSize: '12px' }}>Password không hợp lệ</div>}
+
 
             <InputField
               label="Số điện thoại"
