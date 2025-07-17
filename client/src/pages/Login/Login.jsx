@@ -68,22 +68,16 @@ const Login = () => {
             {errors.email && <div style={{ color: 'red', fontSize: '12px' }}>Email không hợp lệ</div>}
 
             
+            <InputField
+              label="Password"
+              type="p"
+              value={email}
+              setValue={setEmail}
+              handleOnchange={(val) => setEmail(val)}
+            />
+            {errors.email && <div style={{ color: 'red', fontSize: '12px' }}>Email không hợp lệ</div>}
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', gap: '20px' }}>
-              <div>
-                <Image src={captcha} alt="Captcha" style={{ width: '100%', height: 'auto', borderRadius: '10px' }} />
-              </div>
-              <div style={{ marginTop: '-17px' }}>
-                <InputField
-                  label="Mã captcha"
-                  type="number"
-                  value={captchaValue}
-                  setValue={setCaptchaValue}
-                  handleOnchange={(val) => setCaptchaValue(val)}
-                />
-                {errors.captcha && <div style={{ color: 'red', fontSize: '12px' }}>Mã captcha không đúng</div>}
-              </div>
-            </div>
+            
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
               <Button

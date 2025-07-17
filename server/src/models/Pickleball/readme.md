@@ -1,9 +1,9 @@
 Model User 
 
-- Chứa thông tin user
-- Không được trùng gmail
-- Mật khẩu cần mã hóa
-- Verify token khi đăng nhập
+- Chứa thông tin user /
+- Không được trùng gmail /
+- Mật khẩu cần mã hóa 
+- Verify token khi đăng nhập 
 
 Model Sân
 
@@ -39,3 +39,12 @@ Model Banner
 - Thông tin chương trình khuyến mãi
 - Link ảnh từ server
 
+- User 
+- Tạo sân
+- Xóa sân
+- Sửa sân
+- Đặt sân
+- Hủy đặt sân
+- Thanh toán 
+
+- 

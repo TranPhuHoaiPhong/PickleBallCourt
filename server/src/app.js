@@ -1,15 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const routes = require("./routes")
+const bodyParser = require("body-parser");
+// const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors({
+    origin: process.env.FRONT_END_URL,
+    credentials: true
+}));
 
-// Route example
+app.use(bodyParser.json()); // Đọc JSON body
+// app.use(cookieParser())
 
-// Xuất module app
+app.use(express.urlencoded({ extended: true })); // Đọc dữ liệu form
+
+routes(app);
+
 module.exports = app;
