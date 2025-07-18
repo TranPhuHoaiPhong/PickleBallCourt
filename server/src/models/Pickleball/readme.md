@@ -40,6 +40,8 @@ Model Banner
 - Link ảnh từ server
 
 - User 
+    Kết nối vs front to back end
+
 - Tạo sân
 - Xóa sân
 - Sửa sân
@@ -48,3 +50,24 @@ Model Banner
 - Thanh toán 
 
 - 
+
+✅ Cách khắc phục: Tạo App Password cho Gmail
+Bước 1: Bật xác minh 2 bước cho Gmail
+Truy cập: https://myaccount.google.com/security
+
+Kéo xuống phần “Signing in to Google”
+
+Bật 2-Step Verification nếu chưa bật
+
+Bước 2: Tạo App Password
+Truy cập: https://myaccount.google.com/apppasswords
+
+Chọn:
+
+App: "Mail"
+
+Device: "Other (Custom name)" → nhập tên tùy chọn như "Nodemailer"
+
+Bấm Generate
+
+📌 Google sẽ tạo một mật khẩu 16 ký tự (ví dụ: abcd efgh ijkl mnop)

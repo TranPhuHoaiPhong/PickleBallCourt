@@ -2,7 +2,8 @@ const User = require("../models/Pickleball/User")
 const bcrypt = require("bcryptjs")
 const { generateAccessToken, generateRefreshToken } = require("./JwtService")
 const jwt = require('jsonwebtoken');
-
+const nodemailer = require("nodemailer");
+const { setCode, getCode } = require("../itls/verifyCache")
 
 const createUser = (newUser) => {
     return new Promise( async(resolve, reject) => {
@@ -148,10 +149,114 @@ const deleteUser = (id) => {
     })
 }
 
+const getAllUser = () => {
+    return new Promise( async(resolve, reject) => {
+        try {
+            const allUser = await User.find()
+            
+            return resolve({
+                status: "OK",
+                message: "Get all users successfully",
+                data: allUser
+            })           
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const getDetail = (id) => {
+    return new Promise( async(resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id
+            })
+            
+            if (checkUser === null) {
+                return resolve({
+                    status: "ERR",
+                    message: "User not found"
+                })
+            }
+            return resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: checkUser
+            })
+            
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const verifyUser = (email) => {
+    return new Promise( async(resolve, reject) => {
+        
+        try {
+           const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+            const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.GMAIL_USER,      // email bạn dùng để gửi
+                pass: process.env.GMAIL_PASS   // mật khẩu ứng dụng (App password)
+            }
+            });
+
+            const mailOptions = {
+            from: process.env.GMAIL_USER,
+            to: email,
+            subject: 'Mã xác minh của bạn',
+            text: `Mã xác minh của bạn là: ${verificationCode}`
+            };
+
+            const res = await transporter.sendMail(mailOptions);
+
+            setCode(email, verificationCode)
+
+
+            return resolve({
+                status: "OK",
+                message: "SENT TO THE GMAIL SUCCESSFULLY"
+            })
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const verifyCode = (verifyCode, email) => {
+    const savedverifyCode = getCode(email);
+    if (!savedverifyCode) {
+        return {
+        status: "ERROR",
+        code: 200,
+        message: "Mã xác minh không tồn tại hoặc đã hết hạn"
+        };
+    }
+    if(savedverifyCode !== verifyCode) {
+        return {
+        status: "ERROR",
+        code: 200,
+        message: "Mã xác minh không đúng"
+        };
+    }
+    return {
+        status: "SUCCESS",
+        code: 200,
+        message: "Xác minh thành công"
+    }
+}
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllUser,
+    getDetail,
+    verifyUser,
+    verifyCode
 }
 

@@ -1,4 +1,6 @@
 const UserService = require('../services/UserService');
+const JWT = require("../services/JwtService")
+
 
 const createUser = async (req, res) => {
   try {
@@ -90,9 +92,116 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const getAllUser = async (req, res) => {
+  try {
+    const result = await UserService.getAllUser();
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error get all user",
+    });
+  }
+}
+
+const getDetail = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    if (!userId) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "User ID is required"
+      });
+      
+    }
+    const result = await UserService.getDetail(userId);
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error get all user",
+    });
+  }
+}
+
+const getRefreshToken = async (req, res) => {
+  try {
+   if (!req.headers.token) {
+        return res.status(404).json({
+            status: "ERR",
+            message: "Unauthorized access - No token provided"
+        })}
+    const token = req.headers.token.split(" ")[1];
+    const result = await JWT.handleRefreshToken(token)
+    return res.status(200).json(result);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Error get all user",
+    });
+  }
+}
+
+const verifyUser = async (req, res) => {
+  try {
+    if (!req.body?.email) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "The gmail is required"
+      });
+    }
+    const { email } = req.body;
+    
+    const result = await UserService.verifyUser(email);
+    return res.status(200).json(result);
+
+
+  } catch (error) {
+    console.error("Email send error:", error);
+    return res.status(500).json({
+      status: "ERR",
+      message: "Internal server error while sending verification code",
+    });
+  }
+};
+
+const verifyCode = async (req, res) => {
+  try {
+    if (!req.body?.verifyCode || !req.body?.email) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "The input is required"
+      });
+    }
+    const { verifyCode, email } = req.body;
+    
+    const result = await UserService.verifyCode(verifyCode, email);
+    return res.status(result.code).json({
+      status: result.status,
+      message: result.message
+    });
+
+
+  } catch (error) {
+    console.error("Email send error:", error);
+    return res.status(500).json({
+      status: "ERR",
+      message: "Internal server error while sending verification code",
+    });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getAllUser,
+  getDetail,
+  getRefreshToken,
+  verifyUser,
+  verifyCode
 };

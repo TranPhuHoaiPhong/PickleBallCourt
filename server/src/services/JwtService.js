@@ -7,7 +7,7 @@ const generateAccessToken = (payload) => {
     return jwt.sign(
         payload, // Bọc payload cho dễ hiểu thôi, bên auth verify token sẽ phải decoded.payload.
         process.env.JWT_ACCESS_SECRET,
-        { expiresIn: '120s' }
+        { expiresIn: '30s' }
     );
 }
 
@@ -24,7 +24,7 @@ const handleRefreshToken = async (refreshToken) => {
         const user = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
         const access_token = generateAccessToken({ // nếu bọc thêm payload thì bên này cũng phải user.payload?._id.
-            id: user._id,
+            _id: user._id,
             isAdmin: user.isAdmin,
             // isSeller: user.isSeller,
         });
