@@ -5,8 +5,12 @@ import { Link } from 'react-router-dom';
 import { HomeOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Button, Modal } from 'antd';
+import { useSelector } from 'react-redux';
 
 function HeaderComponent() {
+  const user = useSelector((state) => state.user);
+
+
   const [searchValue, setSearchValue] = useState('');
   const handleSearch = (value) => {
     console.log('Search value:', value);
@@ -44,9 +48,35 @@ function HeaderComponent() {
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', width: "60%"}}>
                             
-                          <Link to={"/register"} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <UserOutlined style={{ fontSize: '30px', marginRight: '40px', marginLeft: '40px', cursor: 'pointer' }} />
-                          </Link>
+
+                          {user?._id ? (
+                            <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <UserOutlined
+                                  style={{
+                                    fontSize: '30px',
+                                    marginRight: '15px',
+                                    marginLeft: '40px',
+                                    cursor: 'pointer'
+                                  }}
+                                />
+                                <div>
+                                  <span>{user.name}</span>
+                                </div>
+                              </div>
+                            </Link>
+                          ) : (
+                            <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                              <UserOutlined
+                                style={{
+                                  fontSize: '30px',
+                                  marginRight: '40px',
+                                  marginLeft: '40px',
+                                  cursor: 'pointer'
+                                }}
+                              />
+                            </Link>
+                          )}
                             
 
 

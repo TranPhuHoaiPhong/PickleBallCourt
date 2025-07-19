@@ -1,22 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeaderComponent from '../../components/UserComponent/PickleCourt/HeaderPickleComponent/HeaderPickleComponent'
 import InputField from "../../components/UserComponent/PickleCourt/Component/InputComponent/InputComponent"
-import { Button, Image } from 'antd'
-import captcha from '../../assets/captcha/07487.jpg'
+import { Button } from 'antd'
+import {handleVerify} from "../HandlePage/VerifyGmail"
+import {sendGmail} from "../HandlePage/SendGmail"
 import { Link } from 'react-router-dom'
 import { Modal } from 'antd';
+import { useNavigate } from "react-router-dom";
+import * as UserService from "../../services/users/authServices"
+import { useMutationHook } from '../../hooks/useMutationHook'
+import { showSuccess } from "../../components/UserComponent/Message/Message"
 
 
 const Register = () => {
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [captchaValue, setCaptchaValue] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const [verifyError, setVerifyError] = useState(false);
+
+  useEffect(() => {
+    if(emailError && email){
+      setEmailError(false)
+    }
+  }, [email])
+
+  const mutation = useMutationHook(
+    data => UserService.SignUp(data)
+  )
+
 
 
   const [errors, setErrors] = useState({
@@ -33,17 +50,45 @@ const Register = () => {
       password: password.trim() === "",
       email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
       phone: !/^\d{9,11}$/.test(phone),
-      captcha: captchaValue !== "07487",
     };
 
     setErrors(newErrors);
 
     const hasError = Object.values(newErrors).some((val) => val);
     if (hasError) return;
-
-    // alert("🎉 Đăng ký thành công!");
+    sendGmail(email)
     setIsModalOpen(true);
   };
+
+  const data = {name: fullName, email, phone, password}
+
+  const onConfirm = async () => {
+    const verify = await handleVerify({
+      verifyCode,
+      setIsModalOpen,
+      setVerifyError,
+      navigate,
+      data
+    })
+    if (verify === true) {
+      try {
+        const response = await mutation.mutateAsync(data)
+        if (response.status === "ERR") {
+          setEmailError(true); 
+        } else {
+          setEmailError(false); 
+        }
+        if (response.status === "OK") {
+          showSuccess("Đăng ký thành công")
+          navigate("/court")
+        } 
+
+      } catch (error) {
+        
+      }
+      
+    }
+  }
 
   return (
     <>
@@ -77,6 +122,11 @@ const Register = () => {
               handleOnchange={(val) => setEmail(val)}
             />
             {errors.email && <div style={{ color: 'red', fontSize: '12px' }}>Email không hợp lệ</div>}
+            {emailError && (
+              <div className="emailCheck" style={{ color: 'red', fontSize: '12px' }}>
+                Email đã tồn tại
+              </div>
+            )}
 
             <InputField
               label="Mật khẩu"
@@ -132,14 +182,7 @@ const Register = () => {
         open={isModalOpen}
         centered
         title="Xác minh tài khoản Gmail"
-        onOk={() => {
-            if (verifyCode === "123456") {
-            alert("✅ Xác minh thành công!");
-            setIsModalOpen(false);
-            } else {
-            setVerifyError(true);
-            }
-        }}
+        onOk={onConfirm}
         onCancel={() => setIsModalOpen(false)}
         okText="Xác nhận"
         cancelText="Hủy"

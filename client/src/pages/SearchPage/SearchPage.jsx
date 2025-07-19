@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import HeaderComponent from '../../components/UserComponent/PickleCourt/HeaderPickleComponent/HeaderPickleComponent';
 import FooterPickleCourt from '../../components/UserComponent/PickleCourt/FooterPickleCourt/FooterPickleCourt';
 import SearchPagecomponent from '../../components/UserComponent/PickleCourt/SearchPage/SearchPage';

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const routes = require("./routes")
 const bodyParser = require("body-parser");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json()); // Đọc JSON body
-// app.use(cookieParser())
+app.use(cookieParser())
 
 app.use(express.urlencoded({ extended: true })); // Đọc dữ liệu form
 

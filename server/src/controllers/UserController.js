@@ -39,7 +39,13 @@ const loginUser = async (req, res) => {
       });
     }
     const result = await UserService.loginUser(req.body);
-    return res.status(200).json(result);
+    const {REFRESHTOKEN, ...new_response} = result;
+    
+    res.cookie("refresh_token", REFRESHTOKEN, {
+      httpOnly: true,
+      Secure: true
+    })
+    return res.status(200).json(new_response);
 
   } catch (error) {
     console.error(error);
@@ -128,12 +134,13 @@ const getDetail = async (req, res) => {
 
 const getRefreshToken = async (req, res) => {
   try {
-   if (!req.headers.token) {
+   if (!req.cookies.refresh_token) {
         return res.status(404).json({
             status: "ERR",
             message: "Unauthorized access - No token provided"
         })}
-    const token = req.headers.token.split(" ")[1];
+    const token = req.cookies.refresh_token
+
     const result = await JWT.handleRefreshToken(token)
     return res.status(200).json(result);
 

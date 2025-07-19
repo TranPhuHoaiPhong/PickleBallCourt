@@ -7,6 +7,7 @@ import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import CourtBookingManager from "../pages/Admin/CourtBookingManager/CourtBookingManager";
 import Login from "../pages/Login/Login";
+import Profile from "../pages/Profile/Profile";
 export const routes = [
   {
     path: "/",
@@ -51,6 +52,11 @@ export const routes = [
   {
     path: "/login",
     page: Login,
+    isShowHeader: false,
+  },
+  {
+    path: "/profile",
+    page: Profile,
     isShowHeader: false,
   },
 ];
