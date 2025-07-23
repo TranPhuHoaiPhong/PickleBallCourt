@@ -1,5 +1,6 @@
 const UserService = require('../services/UserService');
-const JWT = require("../services/JwtService")
+const JWT = require("../services/JwtService");
+const { path } = require('../app');
 
 
 const createUser = async (req, res) => {
@@ -39,12 +40,17 @@ const loginUser = async (req, res) => {
       });
     }
     const result = await UserService.loginUser(req.body);
-    const {REFRESHTOKEN, ...new_response} = result;
+
+    const {refresh_token, ...new_response} = result;
     
-    res.cookie("refresh_token", REFRESHTOKEN, {
+    res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
-      Secure: true
+      secure: false, // nếu đang ở localhost thì nên false
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+      path: "/",
     })
+
     return res.status(200).json(new_response);
 
   } catch (error) {

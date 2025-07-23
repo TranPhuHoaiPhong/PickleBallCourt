@@ -4,7 +4,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import img1 from '../../../assets/product/pd1.webp'
 import img2 from '../../../assets/product/pd2.webp'
-import { convertPrice } from '../../../utils';
+import { convertPrice } from '../../../utils/utils';
 
 const { Meta } = Card;
 

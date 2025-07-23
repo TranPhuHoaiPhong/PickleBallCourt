@@ -53,14 +53,15 @@ const Login = () => {
     if (hasError) return;
 
     const response = await mutation.mutateAsync(data)
+
     if(response?.status === "OK") {
       showSuccess("Đăng nhập thành công")
       navigate("/court")
-      localStorage.setItem("access-token", JSON.stringify(response?.ACCESSTOKEN))
-      if(response?.ACCESSTOKEN) {
-        const decoded = jwtDecode(response?.ACCESSTOKEN)
+      localStorage.setItem("access-token", JSON.stringify(response?.access_token))
+      if(response?.access_token) {
+        const decoded = jwtDecode(response?.access_token)
         if(decoded?._id) {
-          handleGetDetailUser(decoded?._id, response?.ACCESSTOKEN)
+          handleGetDetailUser(decoded?._id, response?.access_token)
         }
       }
     }

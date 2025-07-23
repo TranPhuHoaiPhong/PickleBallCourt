@@ -9,16 +9,18 @@ import {
 } from '@tanstack/react-query'
 import { message } from 'antd';
 import { setMessageApi } from './components/UserComponent/Message/Message'; // đường dẫn đúng
-import { isJsonString } from "./utils";
+import { isJsonString } from "./utils/utils";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "./services/users/authServices"
 import { updateUser } from "./redux/slides/userSlide";
 import { useDispatch } from "react-redux";
+import { handleDecode } from "./utils/authUtils";
+
+import * as authUtils from "./utils/authUtils";
 
 
 function App() {
   const dispatch = useDispatch()
-
 
   const fetchApi = async () => {
     try {
@@ -36,24 +38,25 @@ function App() {
   setMessageApi(messageApi);
 
   useEffect(() => {
-    let storageData = localStorage.getItem('access-token')
-    if(storageData && isJsonString(storageData)) {
-      storageData = JSON.parse(storageData)
-      const decoded = jwtDecode(storageData)
-      console.log("decodeApp", decoded);
-      if(decoded?._id) {
-        handleGetDetailUser(decoded?._id, storageData)
-      }
+    const { storageData, decoded } = authUtils.handleDecode()
+    if(decoded?._id) {
+      authUtils.handleGetDetailUser(decoded?._id, storageData, dispatch)
     }
-    console.log("storageData", storageData);
-
   }, [])
 
-  const handleGetDetailUser = async (id, token) => {
-      const res = await UserService.getDetailUser(id, token)
-      const { name, email, phone, _id } = res.data
-      dispatch(updateUser({name, email, phone, _id}))
-  }
+
+  UserService.axiosJWT.interceptors.request.use(async (config) => {
+    const currentTime = new Date()
+    const { decoded } = authUtils.handleDecode()
+    if( decoded?.exp < currentTime.getTime() / 1000 ) { 
+      const data = await UserService.getRefreshToken()
+      config.headers['token'] = `Bearer ${data.access_token}`
+    }
+
+    return config
+  }, function (error) {
+    return Promise.reject(error)
+  })
 
   return (
     <>

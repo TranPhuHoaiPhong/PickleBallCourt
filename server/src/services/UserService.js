@@ -51,14 +51,14 @@ const loginUser = (userLogin) => {
             })
 
             if (checkEmail === null) { 
-                return resolve({
+                return reject({
                     status: "ERR",
                     message: "User is not defined"
                 })
             }
             const comparePassword = bcrypt.compareSync(password, checkEmail.password)
             if (!comparePassword) {
-                return resolve({
+                return reject({
                     status: "ERR",
                     message: "Password is not correct"
                 })
@@ -70,18 +70,15 @@ const loginUser = (userLogin) => {
 
             const access_token = await generateAccessToken(payload)
             const refresh_token = await generateRefreshToken(payload);
-            if(comparePassword){
-                return resolve({
+        
+                resolve({
                     status: "OK",
                     message: "Login successful",
-                    ACCESSTOKEN: access_token,
-                    REFRESHTOKEN: refresh_token,
+                    access_token,
+                    refresh_token,
                 })
-            }
-
             
 
-            
         } catch (error) {
             reject(error);
         }
