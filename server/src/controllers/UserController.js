@@ -1,6 +1,7 @@
 const UserService = require('../services/UserService');
 const JWT = require("../services/JwtService");
 const { path } = require('../app');
+const { authMiddleWare } = require('../middleware/authMiddleWare');
 
 
 const createUser = async (req, res) => {
@@ -119,7 +120,9 @@ const getAllUser = async (req, res) => {
 
 const getDetail = async (req, res) => {
   try {
-    const userId = req.params.id;
+
+    const userId = req.user?._id;
+
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
@@ -140,6 +143,7 @@ const getDetail = async (req, res) => {
 
 const getRefreshToken = async (req, res) => {
   try {
+    console.log("refresh", req.cookies.refresh_token);
    if (!req.cookies.refresh_token) {
         return res.status(404).json({
             status: "ERR",
@@ -207,6 +211,28 @@ const verifyCode = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+
+    res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        path: "/",
+    });
+
+    return res.status(200).json({
+      status: "OK",
+      message: "User logged out successfully",
+    });
+
+  } catch (error) {
+    return res.status(404).json({
+      message: "Error logging out",
+    });
+  }
+}
+
 module.exports = {
   createUser,
   loginUser,
@@ -216,5 +242,6 @@ module.exports = {
   getDetail,
   getRefreshToken,
   verifyUser,
-  verifyCode
+  verifyCode,
+  logoutUser
 };

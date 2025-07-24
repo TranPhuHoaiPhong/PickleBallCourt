@@ -17,10 +17,16 @@ export const userSlice = createSlice({
       state.email = email;
       state.phone = phone;
       state._id = _id;
+    },
+    resetUser: (state, action) => {
+      state.name = "";
+      state.email = "";
+      state.phone = "";
+      state._id = "";
     }
   },
 })
 
-export const { updateUser } = userSlice.actions
+export const { updateUser, resetUser } = userSlice.actions
 
 export default userSlice.reducer

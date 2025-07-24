@@ -15,10 +15,11 @@ export const SignUp = async(data) => {
     return res.data
 }
 
-export const getDetailUser = async(id, access_token) => {
-    const res = await axiosJWT.get(`${process.env.REACT_APP_SERVER_URL}/api/user/getDetail/${id}`, {
+export const getDetailUser = async( token) => {
+    console.log("token detail", token);
+    const res = await axiosJWT.get(`${process.env.REACT_APP_SERVER_URL}/api/user/getDetail`, {
         headers: {
-            token: `Bearer ${access_token}`
+            Authorization: `Bearer ${token}`
         }
     }    
     )
@@ -31,3 +32,39 @@ export const getRefreshToken = async() => {
     })
     return res.data
 }
+
+// export const logoutUser = async () => {
+//   try {
+//     const res = await axios.delete(
+//       `${process.env.REACT_APP_SERVER_URL}/api/user/log-out`,
+//       {
+//         withCredentials: true, // để gửi cookie đi (cần thiết!)
+//       }
+//     );
+
+//     return res.data;
+//   } catch (error) {
+//     console.log("Logout failed:", error);
+//     throw error;
+//   }
+// };
+
+export const logoutUser = async (cleanToken) => {
+  try {
+    const res = await axios.delete(
+      `${process.env.REACT_APP_SERVER_URL}/api/user/log-out`,
+      {
+        headers: {
+            "Authorization": `Bearer ${cleanToken}`
+        },
+        withCredentials: true, // để gửi cookie đi (cần thiết!)
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log("Logout failed:", error);
+    throw error;
+  }
+};
+

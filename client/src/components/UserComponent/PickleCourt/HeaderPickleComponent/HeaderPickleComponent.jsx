@@ -1,13 +1,64 @@
 import React from 'react'
 import { WrapperHeader} from './styled';
-import { Col } from 'antd';
-import { Link } from 'react-router-dom';
+import { Col, Popover } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import { HomeOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { Button, Modal } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UserService from "../../../../services/users/authServices"
+import { resetUser } from '../../../../redux/slides/userSlide';
+import * as Util from "../../../../utils/authUtils"
+
+
 
 function HeaderComponent() {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+    
+
+  const handleLogout = async () => {
+    try {
+      const token = await Util.getValidAccessToken()
+      
+      if (token) {
+        await UserService.logoutUser(token)
+        localStorage.removeItem("access-token");
+        dispatch(resetUser())
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    navigate('/court')
+  }
+
+
+  const content = (
+  <div >
+    <div style={{ marginBottom: "10px" }}>
+      <Link
+        to="/profile"
+        style={{ textDecoration: 'none', color: '#333', cursor: 'pointer', }}
+        onMouseOver={(e) => (e.target.style.color = '#000')}
+        onMouseOut={(e) => (e.target.style.color = '#333')}
+      >
+        Thông tin cá nhân
+      </Link>
+    </div>
+    <div
+      style={{ textDecoration: 'none', color: '#333', cursor: 'pointer', }}
+      onMouseOver={(e) => (e.target.style.color = '#000')}
+      onMouseOut={(e) => (e.target.style.color = '#333')}
+      onClick={handleLogout}
+      >
+        Đăng xuất
+    </div>
+  </div>
+);
+
+
+
   const user = useSelector((state) => state.user);
 
 
@@ -50,21 +101,24 @@ function HeaderComponent() {
                             
 
                           {user?._id ? (
-                            <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-                              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <UserOutlined
-                                  style={{
-                                    fontSize: '30px',
-                                    marginRight: '15px',
-                                    marginLeft: '40px',
-                                    cursor: 'pointer'
-                                  }}
-                                />
-                                <div>
-                                  <span>{user.name}</span>
+                            
+                              <Popover placement="bottom" content={content}>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                  <UserOutlined
+                                    style={{
+                                      fontSize: '30px',
+                                      marginRight: '15px',
+                                      marginLeft: '40px',
+                                      cursor: 'pointer'
+                                    }}
+                                  />
+                                  <div>
+                                    <span>{user.name}</span>
+                                  </div>
                                 </div>
-                              </div>
-                            </Link>
+                              </Popover>
+
+                              
                           ) : (
                             <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
                               <UserOutlined

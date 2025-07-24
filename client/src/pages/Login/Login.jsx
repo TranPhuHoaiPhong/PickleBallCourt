@@ -61,7 +61,7 @@ const Login = () => {
       if(response?.access_token) {
         const decoded = jwtDecode(response?.access_token)
         if(decoded?._id) {
-          handleGetDetailUser(decoded?._id, response?.access_token)
+          handleGetDetailUser(response?.access_token)
         }
       }
     }
@@ -71,8 +71,8 @@ const Login = () => {
 
   };
 
-  const handleGetDetailUser = async (id, token) => {
-      const res = await UserService.getDetailUser(id, token)
+  const handleGetDetailUser = async (token) => {
+      const res = await UserService.getDetailUser(token)
       const { name, email, phone, _id } = res.data
       dispatch(updateUser({name, email, phone, _id}))
   }

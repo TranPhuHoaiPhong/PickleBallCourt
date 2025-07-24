@@ -26,3 +26,30 @@ export const handleGetDetailUser = async (id, token, dispatch) => {
         
     }
 }
+
+
+export const getValidAccessToken = async () => {
+  let token = localStorage.getItem("access-token");
+
+  if (token?.startsWith('"') && token.endsWith('"')) {
+    token = token.slice(1, -1); 
+  }
+
+  if (token) {
+    const decoded = jwtDecode(token);
+
+    if (decoded?.exp < Date.now() / 1000) {
+      const res = await UserService.getRefreshToken();
+      const newToken = res?.access_token;
+
+      if (newToken) {
+        localStorage.setItem("access-token", newToken);
+        return newToken;
+      }
+      return null;
+    }
+    return token;
+  }
+
+  return null;
+};
