@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DefaultComponent from "./components/UserComponent/DefaultComponent/DefaultComponent";
+import DefaultComponent from "./components/UserComponent/CommonComponent/DefaultComponent/DefaultComponent";
 import AdminLayout from "./components/AdminComponent/AdminLayout/AdminLayout";
 import { routes } from "./routes/index";
 import * as UserServices from "./services/admin/userServices"
@@ -8,7 +8,7 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import { message } from 'antd';
-import { setMessageApi } from './components/UserComponent/Message/Message'; // đường dẫn đúng
+import { setMessageApi } from './components/UserComponent/CommonComponent/Message/Message'; // đường dẫn đúng
 import { isJsonString } from "./utils/utils";
 import { jwtDecode } from "jwt-decode";
 import * as UserService from "./services/users/authServices"
@@ -32,10 +32,10 @@ function App() {
   // }
 
   //  const query = useQuery({ queryKey: ['todos'], queryFn: fetchApi })
-  //  const [messageApi, contextHolder] = message.useMessage();
+   const [messageApi, contextHolder] = message.useMessage();
 
   // // Gán cho toàn bộ app
-  // setMessageApi(messageApi);
+  setMessageApi(messageApi);
 
   // useEffect(() => {
   //   const { storageData, decoded } = authUtils.handleDecode()
@@ -94,7 +94,7 @@ function App() {
 
   return (
     <>
-    {/* {contextHolder} */}
+    {contextHolder}
     <BrowserRouter>
       <Routes>
         {routes.map((route) => {

@@ -1,13 +1,13 @@
-import HomePgae from "../pages/HomePage/HomePgae";
-import CourtPickle from "../pages/CourtPickleball/CourtPickleball";
-import SearchPage from "../pages/SearchPage/SearchPage";
-import DetailCourt from "../pages/DatailCourt/DetailCourt";
-import BookCourt from "../pages/BookCourt/BookCourtComponent";
-import Register from "../pages/Register/Register";
+import HomePgae from "../pages/User/PickleBallBrand/BrandHomePage/HomePgae";
+import CourtPickle from "../pages/User/PickleBallCourt/CourtPickleball/CourtPickleball";
+import SearchPage from "../pages/User/PickleBallCourt/SearchPage/SearchPage";
+import DetailCourt from "../pages/User/PickleBallCourt/DatailCourt/DetailCourt";
+import BookCourt from "../pages/User/PickleBallCourt/BookCourt/BookCourtComponent";
+import Register from "../pages/User/Common/Register/Register";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import CourtBookingManager from "../pages/Admin/CourtBookingManager/CourtBookingManager";
-import Login from "../pages/Login/Login";
-import Profile from "../pages/Profile/Profile";
+import Login from "../pages/User/Common/Login/Login";
+import Profile from "../pages/User/Common/Profile/Profile";
 export const routes = [
   {
     path: "/",
