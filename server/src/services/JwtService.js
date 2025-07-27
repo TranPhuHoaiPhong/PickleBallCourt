@@ -7,7 +7,7 @@ const generateAccessToken = (payload) => {
     return jwt.sign(
         payload, // Bọc payload cho dễ hiểu thôi, bên auth verify token sẽ phải decoded.payload.
         process.env.JWT_ACCESS_SECRET,
-        { expiresIn: '30s' }
+        { expiresIn: '3000s' }
     );
 }
 

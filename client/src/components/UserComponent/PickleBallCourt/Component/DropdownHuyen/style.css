@@ -23,3 +23,56 @@
 .dropdown-time-button:hover .dropdown-time-space {
   border: 1px solid #1890ff; /* xanh nước biển khi hover */
 }
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+}
+
+.dropdown-toggle:hover {
+  border-color: #888;
+}
+
+.dropdown-toggle .icon {
+  font-size: 16px;
+  color: #000;
+}
+
+.dropdown-toggle .placeholder {
+  color: #aaa;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 160px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}

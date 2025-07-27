@@ -1,9 +1,9 @@
-const User = require("../models/Pickleball/User")
+const User = require("../../models/PickleBallCourt/User")
 const bcrypt = require("bcryptjs")
-const { generateAccessToken, generateRefreshToken } = require("./JwtService")
+const { generateAccessToken, generateRefreshToken } = require("../JwtService")
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
-const { setCode, getCode } = require("../itls/verifyCache")
+const { setCode, getCode } = require("../../itls/verifyCache")
 
 const createUser = (newUser) => {
     return new Promise( async(resolve, reject) => {

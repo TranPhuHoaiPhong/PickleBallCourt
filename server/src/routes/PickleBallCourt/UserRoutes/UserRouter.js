@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
-const userController = require("../../controllers/UserController")
-const { authMiddleWare, authUserMiddleWare, authUserLogoutMiddleWare } = require("../../middleware/authMiddleWare")
+const userController = require("../../../controllers/PickleBallCourt/UserController")
+const { authMiddleWare, authUserMiddleWare, authUserLogoutMiddleWare } = require("../../../middleware/authMiddleWare")
 
 router.post('/sign-up', userController.createUser);
 router.post('/sign-up/verify', userController.verifyUser);

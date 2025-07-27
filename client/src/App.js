@@ -22,27 +22,10 @@ import * as authUtils from "./utils/authUtils";
 function App() {
   const dispatch = useDispatch()
 
-  // const fetchApi = async () => {
-  //   try {
-  //     const res = await UserServices.getAllUser()
-  //     return res.data
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  //  const query = useQuery({ queryKey: ['todos'], queryFn: fetchApi })
    const [messageApi, contextHolder] = message.useMessage();
 
   // // Gán cho toàn bộ app
   setMessageApi(messageApi);
-
-  // useEffect(() => {
-  //   const { storageData, decoded } = authUtils.handleDecode()
-  //   if(decoded?._id) {
-  //     authUtils.handleGetDetailUser(decoded?._id, storageData, dispatch)
-  //   }
-  // }, [])
 
   useEffect(() => {
     const fetcDetailUser =async() =>{
@@ -60,22 +43,6 @@ function App() {
     }
     fetcDetailUser();
   })
-
-
-  // UserService.axiosJWT.interceptors.request.use(async (config) => {
-  //   const currentTime = new Date()
-  //   const { decoded } = authUtils.handleDecode()
-  //   console.log("decoded", decoded);
-  //   if( decoded?.exp < currentTime.getTime() / 1000 ) { 
-  //     const data = await UserService.getRefreshToken()
-  //     console.log("data.access_token", data.access_token);
-  //     config.headers['token'] = `Bearer ${data.access_token}`
-  //   }
-
-  //   return config
-  // }, function (error) {
-  //   return Promise.reject(error)
-  // })
 
   UserServices.axiosJWT.interceptors.request.use(
     async (config) => {

@@ -3,6 +3,7 @@ import CourtComponent from '../../../../../components/UserComponent/PickleBallCo
 import { arrImages, dropdownItems, keySearch } from '../../HandleData/CourtPickleBall/CourtPickleBall';
 import { showError } from '../../../../../components/UserComponent/CommonComponent/Message/Message';
 import { useNavigate } from 'react-router-dom';
+import { searchKeyWord } from '../../../../../services/users/PickleBallCourt/PickleBallCourt';
 
 
 function CourtHeaderContainer() {
@@ -17,8 +18,7 @@ function CourtHeaderContainer() {
     if(keyWord === "") {
         showError("Chọn địa điểm Quận/Huyện ")
     } else {
-        console.log("keyWord", keyWord);
-        navigate("/searchPage")
+        navigate('/searchPage', { state: { keyword: keyWord } });
     }
   };
 

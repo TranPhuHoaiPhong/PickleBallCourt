@@ -19,6 +19,8 @@ app.use(cookieParser())
 
 app.use(express.urlencoded({ extended: true })); // Đọc dữ liệu form
 
+app.use("/uploads", express.static("uploads"));
+
 routes(app);
 
 module.exports = app;

@@ -1,7 +1,7 @@
-const UserService = require('../services/UserService');
-const JWT = require("../services/JwtService");
-const { path } = require('../app');
-const { authMiddleWare } = require('../middleware/authMiddleWare');
+const UserService = require('../../services/PickleBallCourt/UserService');
+const JWT = require("../../services/JwtService");
+const { path } = require('../../app');
+const { authMiddleWare } = require('../../middleware/authMiddleWare');
 
 
 const createUser = async (req, res) => {

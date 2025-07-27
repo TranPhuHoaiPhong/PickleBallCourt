@@ -9,9 +9,9 @@ import slide7 from '../../../../../assets/images/slide7.webp';
 export const arrImages = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 
 export const dropdownItems = [
-  { key: '1', label: "Huyện Ninh Kiều" },
-  { key: '2', label: "Huyện Cái Răng" },
-  { key: '3', label: "Phường Cái Khế" }
+  { key: '1', label: "Ninh Kiều" },
+  { key: '2', label: "Cái Răng" },
+  { key: '3', label: "Cái Khế" }
 ];
 
 export const keySearch = "Thành Phố Cần Thơ";

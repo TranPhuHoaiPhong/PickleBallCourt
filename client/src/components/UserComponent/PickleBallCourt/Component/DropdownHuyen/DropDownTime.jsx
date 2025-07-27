@@ -1,45 +1,58 @@
-import React, { useState } from 'react';
-import { Dropdown, Space } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
 import { CiTimer } from "react-icons/ci";
 import './style.css';
 
-function DropdownTime({ items }) {
-  const [selectedHuyen, setSelectedHuyen] = useState("Khung thời gian");
+function DropdownTime({ items = [1, 2, 3], onSelect }) {
+  const [selectedLabel, setSelectedLabel] = useState("");
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const onClick = ({ key }) => {
-    const selectedItem = items.find(item => item.key === key);
-    if (selectedItem) {
-      const labeltext = selectedItem.label;
-      setSelectedHuyen(labeltext);
-      console.log(`Click on item ${labeltext}`);
+  const handleSelect = (item) => {
+    setSelectedLabel(item.label);
+    setOpen(false);
+    if (onSelect) {
+      onSelect(item);
     }
   };
 
-  const isDefault = selectedHuyen === "Khung thời gian";
+  // Đóng dropdown nếu click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <Dropdown 
-      menu={{ items, onClick, className: "custom-dropdown-menu" }} 
-      trigger={['click']}
-    >
+    <div className="dropdown-container" ref={dropdownRef}>
       <button
-        type="button"
-        onClick={e => e.preventDefault()}
-        className="dropdown-time-button"
+        style={{width: '80px'}}
+        className="dropdown-toggle"
+        onClick={() => setOpen(!open)}
       >
-        <Space className="dropdown-time-space">
-          <CiTimer style={{ color: "black", fontSize: "14px" }} />
-          <span
-            style={{
-              fontSize: "14px",
-              color: isDefault ? "#aaa" : "#000"
-            }}
-          >
-            {selectedHuyen}
-          </span>
-        </Space>
+        <CiTimer className="icon" />
+        <span className={selectedLabel === "Khung thời gian" ? "placeholder" : ""}>
+          {selectedLabel}
+        </span>
       </button>
-    </Dropdown>
+
+      {open && (
+        <div className="dropdown-menu">
+          {items.map((item) => (
+            <div
+              key={item.key}
+              className="dropdown-item"
+              onClick={() => handleSelect(item)}
+            >
+              {item.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
