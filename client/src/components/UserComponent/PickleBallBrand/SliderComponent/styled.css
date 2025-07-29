@@ -1,0 +1,10 @@
+#headerSlider {
+    height: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slick-slider, .slick-list, .slick-track, .slick-slide {
+    height: 100% !important;
+}
