@@ -16,6 +16,7 @@ import BookingModal from "./ModalDetail"
 
 function DetailCourtComponent({ dataCourt }) {
   const { detailCourt, idCourt } = dataCourt;
+  const [ courtSelected, setCourtSelected ] = useState();
   const [mainImage, setMainImage] = useState(i1);
   const thumbnails = [i1, i2, i3, i4, i4];
   const img = thumbnails.slice(0, 4);
@@ -46,8 +47,8 @@ function DetailCourtComponent({ dataCourt }) {
   } = useCourtSelection();
 
   const handleSelectedCourts = (selectedCourts) => {
-    console.log("Các sân đã chọn:", selectedCourts);
-    // Thực hiện xử lý khác (ví dụ lưu vào state, gọi API, ...)
+    setCourtSelected([])
+    setCourtSelected(selectedCourts)
   };
 
 
@@ -118,9 +119,6 @@ function DetailCourtComponent({ dataCourt }) {
             </p>
           </div>
 
-
-
-          
           <SearchAndSelectCourts
             selectedDate={selectedDate}
             selectedTimeStart={selectedTimeStart}
@@ -132,6 +130,7 @@ function DetailCourtComponent({ dataCourt }) {
             itemsStart={itemsStart}
             itemsEnd={itemsEnd}
             selectedCourts={selectedCourts}
+            setSelectedCourts={setCourtSelected}
             onRemoveCourt={onRemoveCourt}
             idCourt={idCourt}
             handleSelectedCourts={handleSelectedCourts}
@@ -142,6 +141,9 @@ function DetailCourtComponent({ dataCourt }) {
             showModal={showModal}
             handleOk={handleOk}
             handleCancel={handleCancel}
+            selectedCourts={courtSelected}
+            timeStart={selectedTimeStart}
+            timeEnd={selectedTimeEnd}
           />
 
 
