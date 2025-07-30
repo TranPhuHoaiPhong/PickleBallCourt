@@ -1,20 +1,22 @@
-export const generateCourtBookingData = (selectedCourts=[], timeStart, timeEnd) => {
-    const result = []
+export const generateCourtBookingData = (selectedCourts = [], timeStart, timeEnd) => {
+  const result = [];
+  const duration = timeEnd - timeStart;
+  let totalPrice = 0;
 
-    console.log("selectedCourts", selectedCourts);
+  selectedCourts.forEach(court => {
+    const price = court.price * duration;
+    totalPrice += price;
 
-    const a = timeEnd - timeStart
-
-    selectedCourts.forEach(court => {
-        for (let hour = timeStart; hour < timeEnd; hour++) {
-            result.push({
-                name: court.name,
-                timeStart: timeStart,
-                timeEnd: timeEnd,
-                price: court.price * a
-            })
-        }
+    result.push({
+      name: court.name,
+      timeStart: `${timeStart}H`,
+      timeEnd: `${timeEnd}H`,
+      price: price
     });
+  });
 
-    return result
-}
+  return {
+    data: result,
+    totalPrice
+  };
+};

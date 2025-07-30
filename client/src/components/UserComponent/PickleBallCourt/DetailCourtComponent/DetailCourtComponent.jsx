@@ -12,6 +12,8 @@ import dayjs from 'dayjs';
 import { useCourtSelection } from '../../../../pages/User/PickleBallCourt/HandlePage/DetailCourt/DetailCourt';
 import SearchAndSelectCourts from './SearchAndSelect';
 import BookingModal from "./ModalDetail"
+import { useNavigate } from 'react-router-dom';
+import { showError } from '../../CommonComponent/Message/Message';
 
 
 function DetailCourtComponent({ dataCourt }) {
@@ -20,6 +22,7 @@ function DetailCourtComponent({ dataCourt }) {
   const [mainImage, setMainImage] = useState(i1);
   const thumbnails = [i1, i2, i3, i4, i4];
   const img = thumbnails.slice(0, 4);
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -49,6 +52,19 @@ function DetailCourtComponent({ dataCourt }) {
   const handleSelectedCourts = (selectedCourts) => {
     setCourtSelected([])
     setCourtSelected(selectedCourts)
+  };
+
+  const handleNavigate = () => {
+    if(courtSelected.length === 0) {
+      showError("Chọn sân trước khi đặt lịch");
+    }
+    navigate('/booking-detail', {
+      state: {
+        courtSelected,
+        selectedTimeStart,
+        selectedTimeEnd
+      }
+    });
   };
 
 
@@ -136,7 +152,14 @@ function DetailCourtComponent({ dataCourt }) {
             handleSelectedCourts={handleSelectedCourts}
           /> 
 
-          <BookingModal
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
+            
+              <Button onClick={handleNavigate}  style={{ width: "65%", padding: "25px" }} color="default" variant="solid">
+                <FaRegCalendarAlt /> Đặt sân ngay
+              </Button>
+          </div>
+
+          {/* <BookingModal
             isModalOpen={isModalOpen}
             showModal={showModal}
             handleOk={handleOk}
@@ -144,7 +167,7 @@ function DetailCourtComponent({ dataCourt }) {
             selectedCourts={courtSelected}
             timeStart={selectedTimeStart}
             timeEnd={selectedTimeEnd}
-          />
+          /> */}
 
 
           

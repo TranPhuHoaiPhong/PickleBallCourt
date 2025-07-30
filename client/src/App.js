@@ -15,7 +15,7 @@ import * as UserService from "./services/users/authServices"
 import { updateUser } from "./redux/slides/userSlide";
 import { useDispatch } from "react-redux";
 import { handleDecode } from "./utils/authUtils";
-
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import * as authUtils from "./utils/authUtils";
 
 
@@ -28,7 +28,7 @@ function App() {
   setMessageApi(messageApi);
 
   useEffect(() => {
-    const fetcDetailUser =async() =>{
+    const fetcDetailUser = async() =>{
       const token = await authUtils.getValidAccessToken();
       try {
         if(token) {
@@ -42,7 +42,7 @@ function App() {
       }
     }
     fetcDetailUser();
-  })
+  }, [])
 
   UserServices.axiosJWT.interceptors.request.use(
     async (config) => {
@@ -59,34 +59,40 @@ function App() {
     }
   );
 
+  const clientId = "AffY-_4DDwR3-kTqn1_e1FYildsuD2lS9sqqTN65jrhASA3MWOg6YsMamsGFKPUhjlMMJ5o-uU-swFeJ";
+  const clientId2 = process.env.REACT_APP_PAYPAL_CLIENT_ID;
+  console.log("clientId2", clientId2);
+  console.log("PayPal Client ID:", clientId)
   return (
     <>
     {contextHolder}
-    <BrowserRouter>
-      <Routes>
-        {routes.map((route) => {
-          const Page = route.page;
+    <PayPalScriptProvider options={{ "client-id": clientId }}>
+      <BrowserRouter>
+        <Routes>
+          {routes.map((route) => {
+            const Page = route.page;
 
-          const Layout = route.isShowHeader
-            ? DefaultComponent
-            : route.isShowAdminLayout
-            ? AdminLayout
-            : Fragment;
+            const Layout = route.isShowHeader
+              ? DefaultComponent
+              : route.isShowAdminLayout
+              ? AdminLayout
+              : Fragment;
 
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                <Layout>
-                  <Page />
-                </Layout>
-              }
-            />
-          );
-        })}
-      </Routes>
-    </BrowserRouter>
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </BrowserRouter>
+    </PayPalScriptProvider>
     </>
   );
 }

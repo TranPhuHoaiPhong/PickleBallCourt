@@ -16,6 +16,7 @@ const columns = [
 const SrollComponent = ({data = [], onCourtSelected }) => {
   const [selectionType, setSelectionType] = useState('checkbox');
   const [tableData, setTableData] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
     if(Array.isArray(data)) {
@@ -25,11 +26,14 @@ const SrollComponent = ({data = [], onCourtSelected }) => {
       price: item.priceHour,
     }));
     setTableData(mapped);
+    setSelectedRowKeys([])
     }
   }, [data])
 
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
+    selectedRowKeys,
+    onChange: (newselectedRowKeys, selectedRows) => {
+      setSelectedRowKeys(newselectedRowKeys)
       if(onCourtSelected ) {
         onCourtSelected(selectedRows)
       }

@@ -5,7 +5,7 @@ import { generateCourtBookingData } from '../../../../services/users/BookingPick
 
 const BookingModal = ({ isModalOpen, showModal, handleOk, handleCancel, selectedCourts, timeStart, timeEnd }) => {
 
-  const bookingdata = generateCourtBookingData(selectedCourts, timeStart, timeEnd)
+  const {data, totalPrice} = generateCourtBookingData(selectedCourts, timeStart, timeEnd)
 
 
   return (
@@ -31,17 +31,17 @@ const BookingModal = ({ isModalOpen, showModal, handleOk, handleCancel, selected
           </Row>
         </div>
 
-        {bookingdata.map((item, idx) => (
+        {data.map((item, idx) => (
           <Row key={idx}>
             <Col span={8} style={colCellStyle}>{item.name}</Col>
             <Col span={4} style={colCellStyle}>{item.timeStart}</Col>
             <Col span={4} style={colCellStyle}>{item.timeEnd}</Col>
-            <Col span={8} style={colCellStyle}>{item.price}</Col>
+            <Col span={8} style={colCellStyle}>{item.price.toLocaleString('vi-VN')}</Col>
           </Row>
         ))}
 
         <div style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '16px', marginTop: '20px', marginRight: '20px' }}>
-          Tổng giá: 270.000
+          Tổng giá: {totalPrice.toLocaleString('vi-VN')}
         </div>
       </Modal>
     </div>
