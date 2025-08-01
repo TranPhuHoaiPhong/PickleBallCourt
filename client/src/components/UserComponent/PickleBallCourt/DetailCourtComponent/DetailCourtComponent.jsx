@@ -54,12 +54,14 @@ function DetailCourtComponent({ dataCourt }) {
     setCourtSelected(selectedCourts)
   };
 
+
   const handleNavigate = () => {
     if(courtSelected.length === 0) {
       showError("Chọn sân trước khi đặt lịch");
     }
     navigate('/booking-detail', {
       state: {
+        selectedDate,
         courtSelected,
         selectedTimeStart,
         selectedTimeEnd

@@ -12,10 +12,11 @@ const BookingDetailHandle = () => {
     const navigate = useNavigate();
     const [currentTime, setCurrentTime] = useState('');
     const location = useLocation();
-    const { courtSelected, selectedTimeStart, selectedTimeEnd } = location.state || {};
+    const { selectedDate ,courtSelected, selectedTimeStart, selectedTimeEnd } = location.state || {};
 
-    const {data, totalPrice} = generateCourtBookingData(courtSelected, selectedTimeStart, selectedTimeEnd)
-    const price_booking = totalPrice * 0.2
+
+
+    
 
     useEffect(() => {
         const now = new Date();
@@ -30,10 +31,13 @@ const BookingDetailHandle = () => {
         setCurrentTime(formattedTime);
     }, []);
     const user = useSelector(state => state.user)
-    const { name, phone } = user
+    const { _id, name, phone } = user
 
     const [namee, setName] = useState(name)
     const [phonee, setPhone] = useState(phone);
+
+    const {data, totalPrice} = generateCourtBookingData(_id, selectedDate, courtSelected, selectedTimeStart, selectedTimeEnd)
+    const price_booking = totalPrice * 0.2
 
     const handleNameChange = (value) => {
         setName(value)
@@ -75,7 +79,7 @@ const BookingDetailHandle = () => {
         },
     ];
 
-
+    const accessToken = localStorage.getItem("access-token");
   return (
     <>
         <div style={{padding: "10px"}}>
@@ -128,7 +132,8 @@ const BookingDetailHandle = () => {
                         Thanh toán
                     </Button>
                     ) : (
-                    <PaymentPage namee={namee} phonee={phonee} totalPrice={price_booking} />
+                        
+                    <PaymentPage accessToken={accessToken} dataCourt={data} namee={namee} phonee={phonee} totalPrice={price_booking} />
                     )}
 
 

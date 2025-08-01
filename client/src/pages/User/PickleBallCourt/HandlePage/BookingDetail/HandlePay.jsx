@@ -1,8 +1,21 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
+import { BookCourtAPI } from "../../../../../services/users/BookingPickleBall/BookingPickleBall";
+import { showSuccess} from "../../../../../components/UserComponent/CommonComponent/Message/Message"
 
-const PaymentPage = ({namee, phonee, totalPrice}) => {
+const PaymentPage = ({accessToken, dataCourt, namee, phonee, totalPrice}) => {
   const navigate = useNavigate();
+
+  const handleApprove = async (data, actions) => {
+    const details = await actions.order.capture()
+    if(details.status === "COMPLETED")
+      {
+        const response = await BookCourtAPI(dataCourt, namee, phonee)
+        console.log("response 111", response.message);
+        navigate("/receipt")
+      }
+
+  }
   return (
     <div>
       <h2>Thanh toán bằng PayPal</h2>
@@ -18,17 +31,7 @@ const PaymentPage = ({namee, phonee, totalPrice}) => {
             }],
           });
         }}
-        onApprove={(data, actions) => {
-          return actions.order.capture().then((details) => {
-            // alert(`Giao dịch thành công bởi ${details.payer.name.given_name}`);
-            console.log(details);
-            if(details.status === "COMPLETED")
-              {
-                navigate("/receipt")
-                
-              }
-          });
-        }}
+        onApprove={handleApprove}
         onError={(err) => {
           console.error("Lỗi thanh toán", err);
         }}
