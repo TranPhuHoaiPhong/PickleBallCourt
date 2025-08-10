@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { Button, message } from "antd";
 import React, { useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { LocationItem, LocationModal, LocationWrapper } from "./style";
@@ -55,6 +55,9 @@ const CourtBookingManager = () => {
 
   return (
     <div style={{ padding: 20, backgroundColor: "#f9f9f9" }}>
+      {/* Nút thêm sân */}
+      <Button>Thêm sân</Button>
+
       {/* Header */}
       <div
         style={{

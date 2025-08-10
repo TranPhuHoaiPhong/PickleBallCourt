@@ -11,6 +11,8 @@ import Profile from "../pages/User/Common/Profile/Profile";
 import BookingDetail from "../pages/User/PickleBallCourt/BookingDetail/BookingDetail";
 import PaymentPage from "../pages/User/PickleBallCourt/HandlePage/BookingDetail/HandlePay";
 import Receipt from "../pages/User/PickleBallCourt/Receipt/Receipt";
+import CourtLocationManager from "../pages/Admin/CourtLocationManager/CourtLocationManager";
+import CourtManager from "../pages/Admin/CourtManager/CourtManager";
 export const routes = [
   {
     path: "/",
@@ -48,7 +50,17 @@ export const routes = [
     isShowAdminLayout: true,
   },
   {
+    path: "/admin/location",
+    page: CourtLocationManager,
+    isShowAdminLayout: true,
+  },
+  {
     path: "/admin/court",
+    page: CourtManager,
+    isShowAdminLayout: true,
+  },
+  {
+    path: "/admin/court-booking",
     page: CourtBookingManager,
     isShowAdminLayout: true,
   },
