@@ -12,13 +12,17 @@ import dayjs from 'dayjs';
 import { useCourtSelection } from '../../../../pages/User/PickleBallCourt/HandlePage/DetailCourt/DetailCourt';
 import SearchAndSelectCourts from './SearchAndSelect';
 import BookingModal from "./ModalDetail"
+import { useNavigate } from 'react-router-dom';
+import { showError } from '../../CommonComponent/Message/Message';
 
 
 function DetailCourtComponent({ dataCourt }) {
   const { detailCourt, idCourt } = dataCourt;
+  const [ courtSelected, setCourtSelected ] = useState();
   const [mainImage, setMainImage] = useState(i1);
   const thumbnails = [i1, i2, i3, i4, i4];
   const img = thumbnails.slice(0, 4);
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -46,8 +50,23 @@ function DetailCourtComponent({ dataCourt }) {
   } = useCourtSelection();
 
   const handleSelectedCourts = (selectedCourts) => {
-    console.log("Các sân đã chọn:", selectedCourts);
-    // Thực hiện xử lý khác (ví dụ lưu vào state, gọi API, ...)
+    setCourtSelected([])
+    setCourtSelected(selectedCourts)
+  };
+
+
+  const handleNavigate = () => {
+    if(courtSelected.length === 0) {
+      showError("Chọn sân trước khi đặt lịch");
+    }
+    navigate('/booking-detail', {
+      state: {
+        selectedDate,
+        courtSelected,
+        selectedTimeStart,
+        selectedTimeEnd
+      }
+    });
   };
 
 
@@ -118,9 +137,6 @@ function DetailCourtComponent({ dataCourt }) {
             </p>
           </div>
 
-
-
-          
           <SearchAndSelectCourts
             selectedDate={selectedDate}
             selectedTimeStart={selectedTimeStart}
@@ -132,17 +148,28 @@ function DetailCourtComponent({ dataCourt }) {
             itemsStart={itemsStart}
             itemsEnd={itemsEnd}
             selectedCourts={selectedCourts}
+            setSelectedCourts={setCourtSelected}
             onRemoveCourt={onRemoveCourt}
             idCourt={idCourt}
             handleSelectedCourts={handleSelectedCourts}
           /> 
 
-          <BookingModal
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
+            
+              <Button onClick={handleNavigate}  style={{ width: "65%", padding: "25px" }} color="default" variant="solid">
+                <FaRegCalendarAlt /> Đặt sân ngay
+              </Button>
+          </div>
+
+          {/* <BookingModal
             isModalOpen={isModalOpen}
             showModal={showModal}
             handleOk={handleOk}
             handleCancel={handleCancel}
-          />
+            selectedCourts={courtSelected}
+            timeStart={selectedTimeStart}
+            timeEnd={selectedTimeEnd}
+          /> */}
 
 
           

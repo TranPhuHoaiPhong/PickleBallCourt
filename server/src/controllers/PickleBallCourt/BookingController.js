@@ -38,8 +38,19 @@ const getAvailableCourts = async (req, res) => {
   }
 };
 
+const getCourtBooked = async (req, res) => {
+  try {
+    const user = req.user._id
+    const bookings = await BookingService.getCourtBooked(user);
+    res.status(200).json({ success: true, data: bookings });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 module.exports = {
   createBooking,
   getAllBookings,
-  getAvailableCourts
+  getAvailableCourts,
+  getCourtBooked
 };

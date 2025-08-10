@@ -9,9 +9,11 @@ export const handleTimeSelectStart = (item, setSelectedTimeStart) => {
 
 export const handleTimeSelectEnd = (item, setSelectedTimeEnd) => {
   setSelectedTimeEnd(item.value);
+
+
 };
 
-export const handleSearchCourt = async (selectedDate, selectedTimeStart, selectedTimeEnd, idCourt, setData) => {
+export const handleSearchCourt = async (selectedDate, selectedTimeStart, selectedTimeEnd, idCourt, setData, setSelectedCourts) => {
   if (!selectedDate || !selectedTimeStart || !selectedTimeEnd) {
     showError("Vui lòng chạy ngày và giờ đầy đủ")
     return;
@@ -31,6 +33,9 @@ export const handleSearchCourt = async (selectedDate, selectedTimeStart, selecte
   const data1 = await searchAvalable( idCourt, formattedDate, selectedTimeStart, duration)
 
   setData(data1)
+
+  setSelectedCourts([])
+
   
 };
 

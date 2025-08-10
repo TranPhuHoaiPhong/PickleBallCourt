@@ -5,7 +5,10 @@ const bookingSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // nếu có user
   startTime: { type: Date, required: true },
   endTime: { type: Date, required: true },
-  status: { type: String, enum: ['booked', 'cancelled'], default: 'booked' }
+  totalPrice: { type: Number, required: true },
+  status: { type: String, enum: ['booked', 'cancelled'], default: 'booked' },
+  name: { type: String, required: true },    
+  phone: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

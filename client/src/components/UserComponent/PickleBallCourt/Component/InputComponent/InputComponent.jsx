@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { InputWrapper, PWrapper } from "./style";
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'; // Dùng icon của antd nếu đang dùng
+import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'; 
 
 const InputField = ({ label, type = "text", value, setValue, handleOnchange, isPassword = false }) => {
   const [isFocused, setIsFocused] = useState(false);

@@ -8,6 +8,9 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import CourtBookingManager from "../pages/Admin/CourtBookingManager/CourtBookingManager";
 import Login from "../pages/User/Common/Login/Login";
 import Profile from "../pages/User/Common/Profile/Profile";
+import BookingDetail from "../pages/User/PickleBallCourt/BookingDetail/BookingDetail";
+import PaymentPage from "../pages/User/PickleBallCourt/HandlePage/BookingDetail/HandlePay";
+import Receipt from "../pages/User/PickleBallCourt/Receipt/Receipt";
 export const routes = [
   {
     path: "/",
@@ -57,6 +60,16 @@ export const routes = [
   {
     path: "/profile",
     page: Profile,
+    isShowHeader: false,
+  },
+  {
+    path: "/booking-detail",
+    page: BookingDetail,
+    isShowHeader: false,
+  },
+  {
+    path: "/receipt",
+    page: Receipt,
     isShowHeader: false,
   },
 ];

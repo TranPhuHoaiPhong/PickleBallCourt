@@ -2,42 +2,54 @@ const Booking = require("../../models/PickleBallCourt/Court/CourtBooking");
 const Court = require("../../models/PickleBallCourt/Court/CourtModel")
 const Location = require("../../models/PickleBallCourt/Court/CourtLocation");
 
-exports.createBooking = async (data, user) => {
-  const { courtId, date, startHour, endHour } = data;
+exports.createBooking = async (bookingList, user) => {
+  // if (!Array.isArray(bookingList) || bookingList.length === 0) {
+  //   throw new Error("Dữ liệu đặt sân không hợp lệ!");
+  // }
 
-  if (!courtId || !date || !startHour || !endHour) {
-    throw new Error("Thiếu thông tin đặt sân!");
+  const newBookings = [];
+
+  for (const data of bookingList) {
+    const { courtId, date, startHour, endHour, totalPrice, name, phone } = data;
+
+    if (!courtId || !date || !startHour || !endHour || !totalPrice || !name || !phone) {
+      throw new Error("Thiếu thông tin đặt sân!");
+    }
+
+    // ⏰ Tạo thời gian theo múi giờ Việt Nam (GMT+7)
+    const startTime = new Date(`${date}T${startHour}:00+07:00`);
+    const endTime = new Date(`${date}T${endHour}:00+07:00`);
+
+    if (startTime >= endTime) {
+      throw new Error(`Thời gian không hợp lệ cho sân ${courtId}`);
+    }
+
+    const existing = await Booking.findOne({
+      court: courtId,
+      startTime: { $lt: endTime },
+      endTime: { $gt: startTime },
+      status: 'booked',
+    });
+
+    if (existing) {
+      throw new Error(`Khung giờ đã được đặt ở sân ${courtId}`);
+    }
+
+    // Chưa tạo DB vội, chỉ thêm vào mảng tạm
+    newBookings.push({
+      court: courtId,
+      user: user._id,
+      startTime,
+      endTime,
+      totalPrice,
+      name,
+      phone
+    });
   }
 
-  // ⏰ Tạo thời gian theo múi giờ Việt Nam (GMT+7)
-  const startTime = new Date(`${date}T${startHour}:00+07:00`);
-  const endTime = new Date(`${date}T${endHour}:00+07:00`);
-
-  if (startTime >= endTime) {
-    throw new Error("Thời gian không hợp lệ!");
-  }
-
-  // ❌ Kiểm tra trùng giờ đã đặt
-  const existing = await Booking.findOne({
-    court: courtId,
-    startTime: { $lt: endTime },
-    endTime: { $gt: startTime },
-    status: 'booked'
-  });
-
-  if (existing) {
-    throw new Error("Khung giờ này đã được đặt!");
-  }
-
-  // ✅ Tạo booking mới
-  const booking = await Booking.create({
-    court: courtId,
-    user: user._id,
-    startTime,
-    endTime
-  });
-
-  return booking;
+  // ✅ Tạo toàn bộ booking nếu không có lỗi nào
+  const created = await Booking.insertMany(newBookings);
+  return created;
 };
 
 
@@ -74,3 +86,13 @@ exports.findAvailableCourts = async (date, hour, duration = 1, locationId) => {
   return courts;
 };
 
+exports.getCourtBooked = async (user) => {
+  if(!user) {
+    throw new Error('ID không tồn tại');
+  }
+  const bookings = await Booking.find({ user: user._id })
+  .populate('court')
+  .sort({ startTime: -1})
+
+  return bookings
+};

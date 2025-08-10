@@ -122,6 +122,44 @@ const VerifyUser = async(req, res, next) => {
 
   const token = authHeader.split(" ")[1];
 
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+
+    const user = await User.findById(decoded._id);
+
+    if(!user) {
+        return res.status(403).json({
+        status: "ERR",
+        message: "Forbidden - User not found in database",
+      });
+    }
+    
+
+    req.user = user; // Có thể dùng ở middleware/controller sau này
+    next();
+
+  } catch (error) {
+    return res.status(401).json({
+        status: "ERR",
+        message: "Unauthorized access - token expired or invalid",
+    })
+  }
+};
+
+const VerifyUserAdmin = async(req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      status: "ERR",
+      message: "Unauthorized access - No token provided",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 
@@ -149,5 +187,6 @@ module.exports = {
     authMiddleWare,
     authUserMiddleWare,
     authUserLogoutMiddleWare,
-    VerifyUser
+    VerifyUser,
+    VerifyUserAdmin
 }

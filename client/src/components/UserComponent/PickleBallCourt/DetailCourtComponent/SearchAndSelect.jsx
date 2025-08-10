@@ -10,6 +10,7 @@ const SearchAndSelectCourts = ({
   itemsStart = [],
   itemsEnd = [],
   selectedCourts,
+  setSelectedCourts,
   onRemoveCourt,
   selectedDate,
   setSelectedTimeStart,
@@ -20,7 +21,6 @@ const SearchAndSelectCourts = ({
   handleSelectedCourts
 }) => {
   const [data, setData] = useState([]);
-
   
   return (
     <>
@@ -64,7 +64,7 @@ const SearchAndSelectCourts = ({
             minWidth: '120px',
           }}
           type="primary"
-          onClick={() => handleSearchCourt(selectedDate, selectedTimeStart, selectedTimeEnd, idCourt, setData)}
+          onClick={() => handleSearchCourt(selectedDate, selectedTimeStart, selectedTimeEnd, idCourt, setData, setSelectedCourts)}
         >
           Tìm kiếm
         </Button>
