@@ -90,7 +90,7 @@ const BookingDetailHandle = () => {
             <Col span={24}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px"}}>
                 <span style={{fontSize: "16px"}}>Thông tin người đặt sân</span>
-                <span>{currentTime}</span>
+                {/* <span>{currentTime}</span> */}
             </div>
             <div>
                 <InputField

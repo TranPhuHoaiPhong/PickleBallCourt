@@ -3,11 +3,11 @@ const courtLocationService = require("../../services/PickleBallCourt/CourtLocati
 const createLocation = async (req, res) => {
   try {
     const { name, address, email, phone, openTime, closeTime, img, googleMapLink} = req.body;
-    if (!name || !address, !email, !phone, !openTime, !closeTime) {
-      return res.status(400).json({ message: "Thiếu tên hoặc địa chỉ!" });
+    if (!name || !address, !email, !phone, !openTime, !closeTime, !img, !googleMapLink) {
+      return res.status(400).json({ message: "Thiếu thông tin vui lòng kiểm tra lại!" });
     }
 
-    const location = await courtLocationService.createCourtLocation({ name, address, email, phone, openTime, closeTime });
+    const location = await courtLocationService.createCourtLocation({ name, address, email, phone, openTime, closeTime, img, googleMapLink });
     res.status(201).json(location);
   } catch (err) {
     res.status(500).json({ message: "Lỗi server", error: err.message });

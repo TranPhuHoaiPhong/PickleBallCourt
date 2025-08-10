@@ -4,27 +4,20 @@ const Court = require("../../models/PickleBallCourt/Court/CourtModel")
 const CourtLocation = require("../../models/PickleBallCourt/Court/CourtLocation")
 
 const createCourt = async (courtData) => {
-    const { name, addressDistrict, priceHour, img, locationId, googleMapLink} = courtData;
+    const { name, priceHour, img, location} = courtData;
 
-    const location = await CourtLocation.findOne({ _id: locationId });
+    const locationID = await CourtLocation.findOne({ _id: location });
 
-    if (!location) {
+    if (!locationID) {
         throw new Error("CourtLocation not found");
     }
 
 
     const newCourt = await Court.create({
         name,
-        addressDistrict,
         priceHour,
-        img,
-        location: locationId,
-        googleMapLink
+        location: locationID
     });
-
-
-    location.courts.push(newCourt._id);
-    await location.save();
 
     return newCourt;
 }
@@ -34,12 +27,23 @@ const allCourt = async () => {
 };
 
 const searchByAddress = async (addressKeyword) => {
-    const locations = await CourtLocation.find({
-        address: { $regex: addressKeyword, $options: 'i' }
-    }).populate('courts');
+  // Tìm các location theo địa chỉ
+  const locations = await CourtLocation.find({
+    address: { $regex: addressKeyword, $options: 'i' }
+  });
 
-  return locations;
-}
+  // Với mỗi location, tìm danh sách courts của nó
+  const results = [];
+  for (const loc of locations) {
+    const courts = await Court.find({ location: loc._id });
+    results.push({
+      ...loc.toObject(),
+      courts
+    });
+  }
+
+  return results;
+};
 
 
 module.exports = {

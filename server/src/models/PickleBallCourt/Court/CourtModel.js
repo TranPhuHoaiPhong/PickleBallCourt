@@ -9,6 +9,11 @@ const courtSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CourtLocation',
+    required: true
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Court', courtSchema);

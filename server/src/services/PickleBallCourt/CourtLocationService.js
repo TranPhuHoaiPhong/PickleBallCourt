@@ -1,7 +1,7 @@
 const CourtLocation = require("../../models/PickleBallCourt/Court/CourtLocation");
 
-const createCourtLocation = async ({ name, address, email, phone, openTime, closeTime }) => {
-  const location = new CourtLocation({ name, address, email, phone, openTime, closeTime });
+const createCourtLocation = async ({ name, address, email, phone, openTime, closeTime, img, googleMapLink }) => {
+  const location = new CourtLocation({ name, address, email, phone, openTime, closeTime, img, googleMapLink });
   return await location.save();
 };
 

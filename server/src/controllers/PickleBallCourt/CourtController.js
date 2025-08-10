@@ -2,11 +2,8 @@ const CourtService = require('../../services/PickleBallCourt/CourtService');
 
 const createCourt = async (req, res) => {
   try {
-    const imagePath = req.file ? `/upload/${req.file.filename}` : null;
-
     const court = await CourtService.createCourt({
-      ...req.body,
-      image: imagePath,
+      ...req.body
     });
     res.status(201).json({ success: true, data: court });
   } catch (error) {

@@ -11,7 +11,6 @@ const PaymentPage = ({accessToken, dataCourt, namee, phonee, totalPrice}) => {
     if(details.status === "COMPLETED")
       {
         const response = await BookCourtAPI(dataCourt, namee, phonee)
-        console.log("response 111", response.message);
         navigate("/receipt")
       }
 

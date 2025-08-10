@@ -16,10 +16,7 @@ const courtLocationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  googleMapLink: { type: String, default: '' },
-  courts: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Court' }
-  ],
+  googleMapLink: { type: String, default: '' }
 });
 
 module.exports = mongoose.model('CourtLocation', courtLocationSchema);
