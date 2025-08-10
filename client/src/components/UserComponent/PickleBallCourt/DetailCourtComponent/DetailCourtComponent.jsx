@@ -14,9 +14,11 @@ import SearchAndSelectCourts from './SearchAndSelect';
 import BookingModal from "./ModalDetail"
 import { useNavigate } from 'react-router-dom';
 import { showError } from '../../CommonComponent/Message/Message';
+import { useSelector } from 'react-redux';
 
 
 function DetailCourtComponent({ dataCourt }) {
+  const user = useSelector((state) => state.user);
   const { detailCourt, idCourt } = dataCourt;
   const [ courtSelected, setCourtSelected ] = useState();
   const [mainImage, setMainImage] = useState(i1);
@@ -56,8 +58,13 @@ function DetailCourtComponent({ dataCourt }) {
 
 
   const handleNavigate = () => {
+    const name = user?.name 
     if(courtSelected.length === 0) {
       showError("Chọn sân trước khi đặt lịch");
+    }
+    if(!name) {
+      showError("Vui lòng đăng nhập để đặt sân");
+      return;
     }
     navigate('/booking-detail', {
       state: {

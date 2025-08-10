@@ -12,7 +12,14 @@ const courtLocationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  courts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Court' }],
+  img: {
+    type: String,
+    required: true
+  },
+  googleMapLink: { type: String, default: '' },
+  courts: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Court' }
+  ],
 });
 
 module.exports = mongoose.model('CourtLocation', courtLocationSchema);

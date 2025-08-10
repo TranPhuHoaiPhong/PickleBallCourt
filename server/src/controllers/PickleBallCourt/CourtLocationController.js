@@ -2,7 +2,7 @@ const courtLocationService = require("../../services/PickleBallCourt/CourtLocati
 
 const createLocation = async (req, res) => {
   try {
-    const { name, address, email, phone, openTime, closeTime} = req.body;
+    const { name, address, email, phone, openTime, closeTime, img, googleMapLink} = req.body;
     if (!name || !address, !email, !phone, !openTime, !closeTime) {
       return res.status(400).json({ message: "Thiếu tên hoặc địa chỉ!" });
     }
