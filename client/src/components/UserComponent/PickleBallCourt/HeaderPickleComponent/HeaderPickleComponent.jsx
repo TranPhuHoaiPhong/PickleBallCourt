@@ -68,6 +68,16 @@ function HeaderComponent() {
       >
         Đăng xuất
       </div>
+      <div style={{ marginTop: "10px" }}>
+        <Link
+          to="/receipt"
+          style={{ textDecoration: "none", color: "#333", cursor: "pointer" }}
+          onMouseOver={(e) => (e.target.style.color = "#000")}
+          onMouseOut={(e) => (e.target.style.color = "#333")}
+        >
+          Lịch sử đặt sân
+        </Link>
+      </div>
     </div>
   );
 
