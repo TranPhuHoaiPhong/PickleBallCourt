@@ -1,5 +1,7 @@
 import React from "react";
-import { TbLayoutDashboardFilled, TbUserFilled } from "react-icons/tb";
+import { FaLocationDot } from "react-icons/fa6";
+import { TbBrandBooking, TbLayoutDashboardFilled, TbUserFilled } from "react-icons/tb";
+import { PiCourtBasketballFill } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
 
 const SidebarComponent = ({ isShowSidebar }) => {
@@ -66,6 +68,28 @@ const SidebarComponent = ({ isShowSidebar }) => {
             padding: 8,
             cursor: "pointer",
           }}
+          onClick={() => navigate("/admin/location")}
+        >
+          <div
+            style={{
+              width: "50px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FaLocationDot size={20} />
+          </div>
+          <div style={textStyle}>Tạo địa điểm</div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: 8,
+            cursor: "pointer",
+          }}
           onClick={() => navigate("/admin/court")}
         >
           <div
@@ -76,7 +100,29 @@ const SidebarComponent = ({ isShowSidebar }) => {
               justifyContent: "center",
             }}
           >
-            <TbUserFilled size={20} />
+            <PiCourtBasketballFill size={20} />
+          </div>
+          <div style={textStyle}>Tạo sân</div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: 8,
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/admin/court-booking")}
+        >
+          <div
+            style={{
+              width: "50px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+           <TbBrandBooking size={20} />
           </div>
           <div style={textStyle}>Đăt sân</div>
         </div>

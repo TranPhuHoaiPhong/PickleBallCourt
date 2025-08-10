@@ -10,3 +10,17 @@ export const searchKeyWord = async (keyword) => {
     throw error;
   }
 };
+
+export const getTopCourt = async () => {
+  try {
+
+    const res = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/api/shared/court/top-court`
+    )
+    return res.data
+    
+  } catch (error) {
+    console.log("Tìm kiếm thất bại:", error);
+    throw error;
+  }
+}
