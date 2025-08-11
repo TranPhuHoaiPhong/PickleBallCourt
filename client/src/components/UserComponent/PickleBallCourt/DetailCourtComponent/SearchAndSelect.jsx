@@ -21,7 +21,7 @@ const SearchAndSelectCourts = ({
   handleSelectedCourts
 }) => {
   const [data, setData] = useState([]);
-  
+   
   return (
     <>
       <div

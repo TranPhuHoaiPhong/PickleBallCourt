@@ -94,7 +94,7 @@ const Receiptt = ({bookinginfo}) => {
 
                 {isExpired && (
                   <p style={{ color: 'red', fontStyle: 'italic' }}>
-                    Quá trễ để hủy đơn này.
+                    
                   </p>
                 )}
               </div>

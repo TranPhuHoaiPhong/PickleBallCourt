@@ -15,7 +15,8 @@ function CourtPickle() {
           <Introduction />
         </div>
       </div>
-      <FooterPickleCourt />
+      
+      <div><FooterPickleCourt /></div>
     </>
   );
 }

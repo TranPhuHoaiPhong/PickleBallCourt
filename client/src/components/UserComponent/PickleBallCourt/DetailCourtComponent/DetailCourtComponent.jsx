@@ -21,9 +21,10 @@ function DetailCourtComponent({ dataCourt }) {
   const user = useSelector((state) => state.user);
   const { detailCourt, idCourt } = dataCourt;
   const [ courtSelected, setCourtSelected ] = useState();
-  const [mainImage, setMainImage] = useState(i1);
-  const thumbnails = [i1, i2, i3, i4, i4];
-  const img = thumbnails.slice(0, 4);
+  const [mainImage, setMainImage] = useState(detailCourt.imgs[0]);
+  const img = detailCourt.imgs
+  
+
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +52,50 @@ function DetailCourtComponent({ dataCourt }) {
     setSelectedTimeEnd,
   } = useCourtSelection();
 
+
+  // Lấy ngày giờ hiện tại ở Việt Nam
+const nowVN = new Date(
+  new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+);
+const nowHourVN = nowVN.getHours();
+
+// Parse giờ mở/đóng từ detailCourt
+const startHour = Number(detailCourt.openTime.split(":")[0]);
+const endHour = Number(detailCourt.closeTime.split(":")[0]);
+
+// Xác định selectedDate có phải là hôm nay ở VN không
+const selectedDateVN = new Date(
+  new Date(selectedDate).toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+);
+const isToday = selectedDateVN.toDateString() === nowVN.toDateString();
+
+// Mảng giờ bắt đầu
+const itemsStart1 = [];
+for (let hour = startHour; hour <= endHour; hour++) {
+  if (!isToday || hour >= nowHourVN) {
+    itemsStart1.push({
+      key: String(hour),
+      label: `${hour}H`,
+      value: String(hour),
+    });
+  }
+}
+
+
+// Mảng giờ kết thúc (lớn hơn giờ bắt đầu)
+const itemsEnd1 = selectedTimeStart
+  ? itemsStart1.filter(
+      (item) => Number(item.value) > Number(selectedTimeStart)
+    )
+  : itemsStart1;
+
+
+
+
+
+
+
+
   const handleSelectedCourts = (selectedCourts) => {
     setCourtSelected([])
     setCourtSelected(selectedCourts)
@@ -59,6 +104,10 @@ function DetailCourtComponent({ dataCourt }) {
 
   const handleNavigate = () => {
     const name = user?.name 
+
+    // console.log("selectedDate", selectedDate);
+    // console.log("end", selectedTimeEnd);
+    // console.log("start", selectedTimeStart);
 
     if(!courtSelected || courtSelected.length === 0) {
       showError("Chọn sân trước khi đặt lịch");
@@ -86,7 +135,7 @@ function DetailCourtComponent({ dataCourt }) {
         <Col xs={24} md={12} style={{ width: '100%' }}>
           <div style={{ width: '100%' }}>
             <img
-              src={mainImage}
+                src={`${process.env.REACT_APP_SERVER_URL}/uploads/court/${mainImage}`}
               alt="Main court"
               style={{ width: '100%', height: '500px', borderRadius: '8px', objectFit: 'cover' }}
             />
@@ -102,7 +151,7 @@ function DetailCourtComponent({ dataCourt }) {
               {img.map((item, index) => (
                 <div key={index} style={{ width: '24%' }}>
                   <img
-                    src={item}
+                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/court/${item}`}
                     alt={`Thumbnail ${index + 1}`}
                     title={`Ảnh ${index + 1}`}
                     onClick={() => setMainImage(item)}
@@ -121,7 +170,7 @@ function DetailCourtComponent({ dataCourt }) {
             </div>
 
           </div>
-
+ 
           
         </Col>
         <Col xs={24} md={12} style={{ width: '100%', position: "relative" }}>
@@ -155,8 +204,8 @@ function DetailCourtComponent({ dataCourt }) {
             setSelectedTimeEnd={setSelectedTimeEnd}
             onChangeDate={onChangeDate}
             disabledDate={disabledDate}
-            itemsStart={itemsStart}
-            itemsEnd={itemsEnd}
+            itemsStart={itemsStart1}
+            itemsEnd={itemsEnd1}
             selectedCourts={selectedCourts}
             setSelectedCourts={setCourtSelected}
             onRemoveCourt={onRemoveCourt}
