@@ -35,16 +35,6 @@ Thumbs.db
 coverage/
 *.tgz
 
-# Bỏ qua ảnh & media
-*.gif
-*.jpg
-*.jpeg
-*.png
-*.svg
-*.webp
-*.mp4
-*.avi
-*.mov
 
 # MongoDB dump hoặc dữ liệu tạm
 dump/
