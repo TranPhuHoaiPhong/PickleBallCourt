@@ -14,6 +14,35 @@ export const handleTimeSelectEnd = (item, setSelectedTimeEnd) => {
 };
 
 export const handleSearchCourt = async (selectedDate, selectedTimeStart, selectedTimeEnd, idCourt, setData, setSelectedCourts) => {
+  // console.log("selectedDate", selectedDate);
+  // console.log("selectedTimeStart", selectedTimeStart);
+  // console.log("selectedTimeEnd", selectedTimeEnd);  
+
+  const nowVN = new Date(
+  new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+);
+const currentHourVN = nowVN.getHours();
+const todayVN = nowVN.toDateString();
+
+// console.log("Giờ hiện tại VN:", currentHourVN, todayVN);
+
+if (!selectedDate || !selectedTimeStart || !selectedTimeEnd) {
+  showError("Vui lòng chọn ngày và giờ đầy đủ");
+  return;
+}
+
+// Chuyển selectedDate sang dạng Date ở VN
+const selectedDateVN = new Date(
+  new Date(selectedDate).toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+);
+
+// Nếu ngày được chọn là hôm nay và giờ bắt đầu < giờ hiện tại → báo lỗi
+if (selectedDateVN.toDateString() === todayVN && Number(selectedTimeStart) < currentHourVN) {
+  showError(`Không thể chọn giờ ${selectedTimeStart}H vì đã qua giờ hiện tại (${currentHourVN}H)`);
+  return;
+}
+
+console.log("OK — giờ hợp lệ");
   if (!selectedDate || !selectedTimeStart || !selectedTimeEnd) {
     showError("Vui lòng chạy ngày và giờ đầy đủ")
     return;
@@ -98,6 +127,8 @@ export const useCourtSelection = () => {
   ? itemsStart.filter((item) => Number(item.value) > Number(selectedTimeStart))
   : itemsStart;
 
+
+ 
   return {
     selectedDate,
     selectedTimeStart,

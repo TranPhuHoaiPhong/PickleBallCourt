@@ -4,6 +4,7 @@ const routes = require("./routes")
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config();
 
@@ -19,7 +20,8 @@ app.use(cookieParser())
 
 app.use(express.urlencoded({ extended: true })); // Đọc dữ liệu form
 
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 routes(app);
 

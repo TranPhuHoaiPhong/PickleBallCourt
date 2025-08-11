@@ -44,7 +44,8 @@ const SearchPage = () => {
       ) : (
         <SearchPageWrapper data={courts} />
       )}
-      <FooterPickleCourt />
+      <div><FooterPickleCourt /></div>
+      
     </>
   );
 };
