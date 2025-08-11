@@ -1,87 +1,85 @@
-import React, { useState } from "react";
-import { Button, Input, Card, Modal, Form, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Input, Card, Modal, Form, message, Table } from "antd";
+import axios from "axios";
+import * as ValidateToken from "../../../utils/authUtils";
+import * as CourtServices from "../../../services/admin/courtServices";
 
 const CourtLocationManager = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [locations, setLocations] = useState([
-    {
-      name: "Sân Văn Thiện",
-      address: "456 Ninh Kiều Cần Thơ",
-      email: "vanthien@gmail.com",
-      phone: "0966259577",
-      openTime: "17:00",
-      closeTime: "22:00",
-      img: "https://via.placeholder.com/300x200?text=San+Van+Thien",
-      googleMapLink:
-        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.636965743097!2d105.7654703758332!3d10.046785972226251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0880f08006ffb%3A0x9a745510330faf4e!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBL4bu5IHRodeG6rXQgLSBDw7RuZyBuZ2jhu4cgQ-G6p24gVGjGoQ!5e0!3m2!1svi!2s!4v1751532641794!5m2!1svi!2s",
-    },
-    {
-      name: "Sân Hoàng Gia",
-      address: "12 Nguyễn Trãi, Hà Nội",
-      email: "hoanggia@gmail.com",
-      phone: "0912345678",
-      openTime: "06:00",
-      closeTime: "21:00",
-      img: "https://via.placeholder.com/300x200?text=San+Hoang+Gia",
-      googleMapLink: "https://maps.google.com",
-    },
-    {
-      name: "Sân Trung Tâm",
-      address: "23 Lê Lợi, TP.HCM",
-      email: "trungtam@gmail.com",
-      phone: "0987654321",
-      openTime: "07:00",
-      closeTime: "20:00",
-      img: "https://via.placeholder.com/300x200?text=San+Trung+Tam",
-      googleMapLink: "https://maps.google.com",
-    },
-    {
-      name: "Sân Bình Minh",
-      address: "45 Trần Phú, Đà Nẵng",
-      email: "binhminh@gmail.com",
-      phone: "0909123456",
-      openTime: "05:30",
-      closeTime: "19:00",
-      img: "https://via.placeholder.com/300x200?text=San+Binh+Minh",
-      googleMapLink: "https://maps.google.com",
-    },
-    {
-      name: "Sân Thành Công",
-      address: "78 Lý Thường Kiệt, Huế",
-      email: "thanhcong@gmail.com",
-      phone: "0934567890",
-      openTime: "08:00",
-      closeTime: "22:00",
-      img: "https://via.placeholder.com/300x200?text=San+Thanh+Cong",
-      googleMapLink: "https://maps.google.com",
-    },
-  ]);
-
-  const filteredLocations = locations.filter((loc) =>
-    loc.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const [locations, setLocations] = useState([]);
   const [form] = Form.useForm();
+  const [imageFiles, setImageFiles] = useState([]);
 
-  const handleAddLocation = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        setLocations([...locations, values]);
-        form.resetFields();
-        setIsModalOpen(false);
-        message.success("Thêm địa điểm mới thành công!");
-      })
-      .catch(() => {
-        message.error("Vui lòng nhập đầy đủ thông tin!");
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+  ];
+
+  const fetchData = async () => {
+    try {
+      const accessToken = await ValidateToken.getValidAccessToken();
+
+      const res = await CourtServices.getLocation(accessToken);
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleAddLocation = async () => {
+    try {
+      const accessToken = await ValidateToken.getValidAccessToken();
+
+      const values = await form.validateFields();
+
+      if (imageFiles.length === 0) {
+        return message.error("Vui lòng chọn ít nhất 1 ảnh!");
+      }
+
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        formData.append(key, values[key]);
       });
+
+      imageFiles.forEach((file) => {
+        formData.append("courtImages", file);
+      });
+
+      const res = await CourtServices.createLocation(accessToken, formData);
+
+      setLocations([...locations, res.data]);
+      form.resetFields();
+      setImageFiles([]);
+      setIsModalOpen(false);
+      message.success("Thêm địa điểm mới thành công!");
+    } catch (error) {
+      message.error(error.response?.data?.message || "Lỗi khi thêm địa điểm!");
+    }
   };
 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Quản lý địa điểm sân Pickleball</h2>
-
+      {/* Thanh tìm kiếm */}
       <div style={{ display: "flex", marginBottom: "20px", gap: "10px" }}>
         <Input
           placeholder="Tìm kiếm theo tên sân..."
@@ -93,40 +91,8 @@ const CourtLocationManager = () => {
           + Thêm địa điểm mới
         </Button>
       </div>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: "20px",
-        }}
-      >
-        {filteredLocations.map((loc, index) => (
-          <Card
-            key={index}
-            cover={<img alt={loc.name} src={loc.img} />}
-            style={{ borderRadius: "8px" }}
-          >
-            <h3>{loc.name}</h3>
-            <p>📍 {loc.address}</p>
-            <p>📧 {loc.email}</p>
-            <p>📞 {loc.phone}</p>
-            <p>
-              ⏰ {loc.openTime} - {loc.closeTime}
-            </p>
-            <iframe
-              src={loc.googleMapLink}
-              width="100%"
-              height="150"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              title={loc.name}
-            ></iframe>
-          </Card>
-        ))}
-      </div>
-
+      {/* Danh sách sân */}
+      {/* <Table dataSource={dataSource} columns={columns} />; */}
       {/* Modal thêm địa điểm */}
       <Modal
         title="Thêm địa điểm mới"
@@ -163,8 +129,12 @@ const CourtLocationManager = () => {
           <Form.Item label="Giờ đóng cửa" name="closeTime">
             <Input placeholder="VD: 22:00" />
           </Form.Item>
-          <Form.Item label="Link ảnh" name="img">
-            <Input placeholder="URL ảnh" />
+          <Form.Item label="Hình ảnh">
+            <input
+              type="file"
+              multiple
+              onChange={(e) => setImageFiles(Array.from(e.target.files))}
+            />
           </Form.Item>
           <Form.Item label="Google Map link" name="googleMapLink">
             <Input placeholder="URL Google Map embed" />
