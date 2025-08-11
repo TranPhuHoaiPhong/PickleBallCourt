@@ -1,38 +1,92 @@
-import React, { useState } from "react";
-import { Button, Input, Card, Modal, Form, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Input, Card, Modal, Form, message, Select } from "antd";
+import * as CourtServices from "../../../services/admin/courtServices";
+import * as ValidateToken from "../../../utils/authUtils";
 
 const CourtManager = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [courts, setCourts] = useState([]);
+  const [locations, setLocations] = useState([]); // lưu danh sách địa điểm
+  const [loading, setLoading] = useState(false);
 
-  // Danh sách sân mặc định
-  const [courts, setCourts] = useState([
-    { name: "Sân số 1", priceHour: 120000, location: "Sân Văn Thiện" },
-    { name: "Sân số 2", priceHour: 150000, location: "Sân Hoàng Gia" },
-    { name: "Sân số 3", priceHour: 100000, location: "Sân Trung Tâm" },
-    { name: "Sân số 4", priceHour: 130000, location: "Sân Bình Minh" },
-    { name: "Sân số 5", priceHour: 160000, location: "Sân Thành Công" },
-  ]);
+  const [editingCourt, setEditingCourt] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [addForm] = Form.useForm();
+  const [editForm] = Form.useForm();
+
+  // Lấy danh sách địa điểm sân
+  const fetchLocationCourt = async () => {
+    try {
+      const accessToken = await ValidateToken.getValidAccessToken();
+      const res = await CourtServices.getLocation(accessToken);
+      setLocations(res || []); // lưu vào state
+    } catch (error) {
+      console.log(error);
+      message.error("Không thể tải danh sách địa điểm!");
+    }
+  };
+
+  useEffect(() => {
+    fetchLocationCourt();
+  }, []);
+
+  // Lấy danh sách sân từ API
+  const fetchCourts = async () => {
+    try {
+      setLoading(true);
+      const accessToken = await ValidateToken.getValidAccessToken();
+      const res = await CourtServices.getCourts(accessToken);
+      setCourts(res || []);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách sân:", error);
+      message.error("Không thể tải danh sách sân!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourts();
+  }, []);
+
+  const handleUpdateCourt = async () => {
+    try {
+      const values = await editForm.validateFields();
+      const accessToken = await ValidateToken.getValidAccessToken();
+      await CourtServices.updateCourt(accessToken, editingCourt._id, values);
+
+      message.success("Cập nhật sân thành công!");
+      setIsEditModalOpen(false);
+      setEditingCourt(null);
+      fetchCourts();
+    } catch (error) {
+      console.error(error);
+      message.error("Không thể cập nhật sân!");
+    }
+  };
+
+  // Xử lý thêm sân mới
+  const handleAddCourt = async () => {
+    try {
+      const values = await addForm.validateFields();
+      const accessToken = await ValidateToken.getValidAccessToken();
+      await CourtServices.createCourt(accessToken, values);
+
+      message.success("Thêm sân mới thành công!");
+      addForm.resetFields();
+      setIsModalOpen(false);
+      fetchCourts(); // load lại danh sách sân
+    } catch (error) {
+      console.error(error);
+      message.error("Không thể thêm sân mới!");
+    }
+  };
 
   const filteredCourts = courts.filter((court) =>
-    court.name.toLowerCase().includes(searchTerm.toLowerCase())
+    court.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const [form] = Form.useForm();
-
-  const handleAddCourt = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        setCourts([...courts, values]);
-        form.resetFields();
-        setIsModalOpen(false);
-        message.success("Thêm sân mới thành công!");
-      })
-      .catch(() => {
-        message.error("Vui lòng nhập đầy đủ thông tin!");
-      });
-  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -59,13 +113,29 @@ const CourtManager = () => {
           gap: "20px",
         }}
       >
-        {filteredCourts.map((court, index) => (
-          <Card key={index} style={{ borderRadius: "8px" }}>
-            <h3>{court.name}</h3>
-            <p>💰 {court.priceHour.toLocaleString()} VND/giờ</p>
-            <p>📍 {court.location}</p>
-          </Card>
-        ))}
+        {loading ? (
+          <p>Đang tải dữ liệu...</p>
+        ) : (
+          filteredCourts.map((court, index) => (
+            <Card
+              key={index}
+              style={{ borderRadius: "8px", cursor: "pointer" }}
+              onClick={() => {
+                setEditingCourt(court);
+                editForm.setFieldsValue({
+                  name: court.name,
+                  priceHour: court.priceHour,
+                  location: court.location?._id || court.location,
+                });
+                setIsEditModalOpen(true);
+              }}
+            >
+              <h3>{court.name}</h3>
+              <p>💰 {court.priceHour?.toLocaleString()} VND/giờ</p>
+              <p>📍 {court.location?.name || court.location}</p>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Modal thêm sân */}
@@ -77,7 +147,7 @@ const CourtManager = () => {
         okText="Thêm"
         cancelText="Hủy"
       >
-        <Form form={form} layout="vertical">
+        <Form form={addForm} layout="vertical">
           <Form.Item
             label="Tên sân"
             name="name"
@@ -95,9 +165,54 @@ const CourtManager = () => {
           <Form.Item
             label="Địa điểm"
             name="location"
-            rules={[{ required: true, message: "Nhập địa điểm" }]}
+            rules={[{ required: true, message: "Chọn địa điểm" }]}
           >
-            <Input placeholder="Tên địa điểm hoặc ID" />
+            <Select placeholder="Chọn địa điểm">
+              {locations.map((loc) => (
+                <Select.Option key={loc._id} value={loc._id}>
+                  {loc.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Chỉnh sửa sân"
+        open={isEditModalOpen}
+        onOk={handleUpdateCourt}
+        onCancel={() => setIsEditModalOpen(false)}
+        okText="Lưu"
+        cancelText="Hủy"
+      >
+        <Form form={editForm} layout="vertical">
+          <Form.Item
+            label="Tên sân"
+            name="name"
+            rules={[{ required: true, message: "Nhập tên sân" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Giá thuê/giờ (VND)"
+            name="priceHour"
+            rules={[{ required: true, message: "Nhập giá thuê" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Địa điểm"
+            name="location"
+            rules={[{ required: true, message: "Chọn địa điểm" }]}
+          >
+            <Select placeholder="Chọn địa điểm">
+              {locations.map((loc) => (
+                <Select.Option key={loc._id} value={loc._id}>
+                  {loc.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>

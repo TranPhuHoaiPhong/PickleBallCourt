@@ -18,4 +18,11 @@ router.get(
 );
 router.get("/get-detail/:id", CourtLocationController.getDetail);
 
+router.post(
+  "/update-location/:id",
+  authMiddleWare,
+  uploadCourtImages,
+  CourtLocationController.updateLocation
+);
+
 module.exports = router;

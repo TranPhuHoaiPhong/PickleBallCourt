@@ -35,7 +35,6 @@ Thumbs.db
 coverage/
 *.tgz
 
-
 # MongoDB dump hoặc dữ liệu tạm
 dump/
 *.bson

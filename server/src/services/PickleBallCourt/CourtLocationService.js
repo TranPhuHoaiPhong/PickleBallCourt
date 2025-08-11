@@ -48,8 +48,36 @@ const getDetailCourtLocation = async (id) => {
   return detail;
 };
 
+const updateLocation = async (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const location = await CourtLocation.findById(id);
+      if (!location) {
+        return reject({ status: 404, message: "Không tìm thấy địa điểm" });
+      }
+
+      // Cập nhật thông tin
+      location.name = data.name;
+      location.address = data.address;
+      location.email = data.email;
+      location.phone = data.phone;
+      location.openTime = data.openTime;
+      location.closeTime = data.closeTime;
+      location.googleMapLink = data.googleMapLink;
+      location.imgs = data.imgs;
+
+      await location.save();
+
+      resolve(location);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   createCourtLocation,
   getAllCourtLocations,
   getDetailCourtLocation,
+  updateLocation,
 };
